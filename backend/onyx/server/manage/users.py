@@ -15,7 +15,8 @@ from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import Query
 from fastapi import Request
-from fastapi import StreamingResponse
+
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -162,7 +163,12 @@ async def generate_login_token(
     _: User = Depends(current_admin_user),
     db_session: Session = Depends(get_session),
 ):
-    stmt = select(User).where(User.id == request.user_id)
+    try:
+        user_uuid = uuid.UUID(request.user_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid user ID format")
+
+    stmt = select(User).where(User.id == user_uuid)
     user = db_session.scalars(stmt).first()
     
     if not user:

@@ -74,22 +74,22 @@ def _user_is_rate_limited_by_global() -> None:
 
 
 def _user_is_rate_limited_by_user_groups(user_id: uuid.UUID) -> None:
-     with get_session_with_current_tenant() as db_session:
-         # Import here to avoid circulars if any
-         from onyx.db.token_limit import fetch_token_rate_limits_for_user_groups
-         from onyx.configs.constants import TIER_LIMIT_ERROR_MESSAGE
+    with get_session_with_current_tenant() as db_session:
+        # Import here to avoid circulars if any
+        from onyx.configs.constants import TIER_LIMIT_ERROR_MESSAGE
+        from onyx.db.token_limit import fetch_token_rate_limits_for_user_groups
 
-         group_limits = fetch_token_rate_limits_for_user_groups(db_session, user_id)
-        
-         if group_limits:
-              cutoff_time = _get_cutoff_time(group_limits)
-              user_usage = _fetch_user_usage(cutoff_time, user_id, db_session)
-              
-              if _is_rate_limited(group_limits, user_usage):
-                  raise HTTPException(
-                     status_code=429,
-                     detail=TIER_LIMIT_ERROR_MESSAGE,
-                 )
+        group_limits = fetch_token_rate_limits_for_user_groups(db_session, user_id)
+
+        if group_limits:
+            cutoff_time = _get_cutoff_time(group_limits)
+            user_usage = _fetch_user_usage(cutoff_time, user_id, db_session)
+
+            if _is_rate_limited(group_limits, user_usage):
+                raise HTTPException(
+                    status_code=429,
+                    detail=TIER_LIMIT_ERROR_MESSAGE,
+                )
 
 def _fetch_user_usage(
     cutoff_time: datetime, user_id: uuid.UUID, db_session: Session
