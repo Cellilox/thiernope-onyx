@@ -431,7 +431,7 @@ export default function AIMessage({
         <div className="mx-auto w-[90%] max-w-message-max">
           <div className="lg:mr-12 mobile:ml-0 md:ml-8">
             <div className="flex items-start">
-              <AgentAvatar agent={chatState.assistant} size={24} />
+              <AgentAvatar agent={chatState.assistant} size={36} />
               <div className="w-full">
                 <div className="max-w-message-max break-words">
                   <div className="w-full desktop:ml-4">
@@ -464,10 +464,10 @@ export default function AIMessage({
                             const displayGroups =
                               finalAnswerComing || toolGroups.length === 0
                                 ? groupedPackets.filter(
-                                    (group) =>
-                                      group.packets[0] &&
-                                      isDisplayPacket(group.packets[0])
-                                  )
+                                  (group) =>
+                                    group.packets[0] &&
+                                    isDisplayPacket(group.packets[0])
+                                )
                                 : [];
 
                             return (
@@ -612,7 +612,7 @@ export default function AIMessage({
                                     // Toggle sidebar if clicking on the same message
                                     if (
                                       selectedMessageForDocDisplay ===
-                                        toggledNodeId &&
+                                      toggledNodeId &&
                                       documentSidebarVisible
                                     ) {
                                       updateCurrentDocumentSidebarVisible(

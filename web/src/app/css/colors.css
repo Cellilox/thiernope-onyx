@@ -72,8 +72,8 @@
   --blue-90: #091938;
   --blue-85: #11254e;
   --blue-80: #173268;
-  --blue-60: #3363c3;
-  --blue-50: #286df8;
+  --blue-60: #1d4ed8;
+  --blue-50: #2563eb;
   --blue-45: #397bff;
   --blue-40: #508afb;
   --blue-20: #9bbeff;
@@ -234,7 +234,7 @@
 
   /* Text */
   --text-05: var(--alpha-grey-100-90);
-  --text-04: var(--alpha-grey-100-75);
+  --text-04: #303030;
   --text-03: var(--alpha-grey-100-55);
   --text-02: var(--alpha-grey-100-45);
   --text-01: var(--alpha-grey-100-20);
@@ -288,9 +288,9 @@
   --border-inverted-01: var(--grey-80);
 
   /* Theme */
-  --theme-primary-06: var(--onyx-ink-100);
-  --theme-primary-05: var(--onyx-ink-95);
-  --theme-primary-04: var(--onyx-ink-90);
+  --theme-primary-06: var(--blue-60);
+  --theme-primary-05: var(--blue-50);
+  --theme-primary-04: var(--blue-40);
 
   /* Status */
   --status-success-05: var(--green-50);

@@ -50,10 +50,10 @@ export const OptionItem = React.memo(
           "px-3 py-2 cursor-pointer transition-colors",
           "flex flex-col rounded-08",
           isExact && "bg-action-link-01",
-          !isExact && isHighlighted && "bg-background-tint-02",
-          !isExact && isSelected && "bg-background-tint-02",
+          !isExact && isHighlighted && "bg-status-info-01",
+          !isExact && isSelected && "bg-status-info-01",
           option.disabled &&
-            "opacity-50 cursor-not-allowed bg-background-neutral-02",
+          "opacity-50 cursor-not-allowed bg-background-neutral-02",
           !option.disabled && !isExact && "hover:bg-background-tint-02"
         )}
       >

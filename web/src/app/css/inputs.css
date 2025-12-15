@@ -3,16 +3,19 @@
   background-color: var(--background-neutral-00);
   border: 1px solid var(--border-01);
 }
+
 .input-normal:hover {
   border-color: var(--border-02);
 }
+
 .input-normal:active {
   border-color: var(--border-05);
 }
+
 .input-normal:focus:not(:active),
 .input-normal:focus-within:not(:active) {
-  border-color: var(--border-05);
-  box-shadow: inset 0px 0px 0px 2px var(--background-tint-04);
+  border-color: #2563eb;
+  box-shadow: inset 0px 0px 0px 1px #2563eb;
 }
 
 .input-error {
@@ -24,4 +27,11 @@
   background-color: var(--background-neutral-03);
   border: none;
   cursor: not-allowed;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-style: normal;
+  font-weight: 400;
+  opacity: 1;
 }

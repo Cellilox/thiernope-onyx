@@ -24,7 +24,7 @@ import { getAuthTypeMetadataSS, getCurrentUserSS } from "@/lib/userSS";
 import { Suspense } from "react";
 import PostHogPageView from "./PostHogPageView";
 import Script from "next/script";
-import { Hanken_Grotesk } from "next/font/google";
+
 import { WebVitals } from "./web-vitals";
 import { ThemeProvider } from "next-themes";
 import CloudError from "@/components/errorPages/CloudErrorPage";
@@ -39,28 +39,26 @@ const inter = Inter({
   display: "swap",
 });
 
-const hankenGrotesk = Hanken_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-hanken-grotesk",
-  display: "swap",
-});
+
 
 export async function generateMetadata(): Promise<Metadata> {
-  let logoLocation = buildClientUrl("/onyx.ico");
+  let logoLocation = buildClientUrl("/cellilox-logo.png");
   let enterpriseSettings: EnterpriseSettings | null = null;
   if (SERVER_SIDE_ONLY__PAID_ENTERPRISE_FEATURES_ENABLED) {
     enterpriseSettings = await (await fetchEnterpriseSettingsSS()).json();
     logoLocation =
       enterpriseSettings && enterpriseSettings.use_custom_logo
         ? "/api/enterprise-settings/logo"
-        : buildClientUrl("/onyx.ico");
+        : buildClientUrl("/cellilox-logo.png");
   }
 
   return {
-    title: enterpriseSettings?.application_name || "Onyx",
+    title: enterpriseSettings?.application_name || "Cellilox",
     description: "Question answering for your documents",
     icons: {
-      icon: logoLocation,
+      icon: "/cellilox-favicon.jpg",
+      shortcut: "/cellilox-favicon.jpg",
+      apple: "/cellilox-favicon.jpg",
     },
   };
 }
@@ -86,7 +84,7 @@ export default async function RootLayout({
   const getPageContent = async (content: React.ReactNode) => (
     <html
       lang="en"
-      className={`${inter.variable} ${hankenGrotesk.variable}`}
+      className={`${inter.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -124,8 +122,8 @@ export default async function RootLayout({
       <body className={`relative ${inter.variable} font-hanken`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          forcedTheme="light"
           disableTransitionOnChange
         >
           <div className="text-text min-h-screen bg-background">

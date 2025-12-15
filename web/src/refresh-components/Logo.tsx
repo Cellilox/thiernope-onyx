@@ -1,12 +1,10 @@
 import { useMemo } from "react";
-import { OnyxIcon, OnyxLogoTypeIcon } from "@/components/icons/icons";
 import { useSettingsContext } from "@/components/settings/SettingsProvider";
 import { NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import Text from "@/refresh-components/texts/Text";
 
-export const FOLDED_SIZE = 24;
-const UNFOLDED_SIZE = 88;
+export const FOLDED_SIZE = 80;
 
 export interface LogoProps {
   folded?: boolean;
@@ -30,12 +28,31 @@ export default function Logo({ folded, className }: LogoProps) {
           className={cn("flex-shrink-0", className)}
         />
       ) : (
-        <OnyxIcon
-          size={FOLDED_SIZE}
+        <img
+          src="/cellilox-logo.png"
+          alt="Logo"
+          style={{
+            objectFit: "contain",
+            height: FOLDED_SIZE,
+            width: FOLDED_SIZE,
+          }}
           className={cn("flex-shrink-0", className)}
         />
       ),
     [className, settings.enterpriseSettings?.use_custom_logo]
+  );
+
+  const celliloxLogo = (
+    <img
+      src="/cellilox-logo.png"
+      alt="Logo"
+      style={{
+        objectFit: "contain",
+        height: FOLDED_SIZE,
+        width: FOLDED_SIZE,
+      }}
+      className={cn("flex-shrink-0", className)}
+    />
   );
 
   return settings.enterpriseSettings?.application_name ? (
@@ -60,13 +77,15 @@ export default function Logo({ folded, className }: LogoProps) {
           )}
           nowrap
         >
-          Powered by Onyx
+          Powered by Cellilox
         </Text>
       )}
     </div>
   ) : folded ? (
-    <OnyxIcon size={FOLDED_SIZE} className={cn("flex-shrink-0", className)} />
+    celliloxLogo
   ) : (
-    <OnyxLogoTypeIcon size={UNFOLDED_SIZE} className={className} />
+    <div className="flex items-center gap-2">
+      {celliloxLogo}
+    </div>
   );
 }
