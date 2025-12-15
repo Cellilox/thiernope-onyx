@@ -46,4 +46,4 @@ services:
 
   code-interpreter:
     ports:
-      - "8000:8000"
+      - "8095:8000"
