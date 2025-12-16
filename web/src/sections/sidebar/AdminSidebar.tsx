@@ -75,7 +75,8 @@ const document_management_items = () => [
 
 const custom_assistants_items = (
   isCurator: boolean,
-  enableEnterprise: boolean
+  enableEnterprise: boolean,
+  isSuperAdmin: boolean
 ) => {
   const items = [
     {
@@ -86,18 +87,18 @@ const custom_assistants_items = (
   ];
 
   if (!isCurator) {
-    items.push(
-      {
+    if (isSuperAdmin) {
+      items.push({
         name: "Slack Bots",
         icon: SlackIconSkeleton,
         link: "/admin/bots",
-      },
-      {
-        name: "Actions",
-        icon: SvgActions,
-        link: "/admin/actions",
-      }
-    );
+      });
+    }
+    items.push({
+      name: "Actions",
+      icon: SvgActions,
+      link: "/admin/actions",
+    });
   } else {
     items.push({
       name: "Actions",
@@ -123,8 +124,12 @@ const collections = (
   enableEnterprise: boolean,
   settings: CombinedSettings | null,
   kgExposed: boolean,
-  customAnalyticsEnabled: boolean
-) => [
+  customAnalyticsEnabled: boolean,
+  userEmail: string | undefined | null
+) => {
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = userEmail === superAdminEmail;
+  return [
     {
       name: "Connectors",
       items: connectors_items(),
@@ -135,7 +140,7 @@ const collections = (
     },
     {
       name: "Custom Assistants",
-      items: custom_assistants_items(isCurator, enableEnterprise),
+      items: custom_assistants_items(isCurator, enableEnterprise, isSuperAdmin),
     },
     ...(isCurator
       ? [
@@ -151,7 +156,7 @@ const collections = (
         },
       ]
       : []),
-    ...(!isCurator
+    ...(!isCurator && isSuperAdmin
       ? [
         {
           name: "Configuration",
@@ -289,6 +294,7 @@ const collections = (
       ]
       : []),
   ];
+};
 
 interface AdminSidebarProps {
   // These props are passed down from a server component (Layout.tsx) that
@@ -321,7 +327,8 @@ export default function AdminSidebar({
     enableEnterpriseSS,
     settings,
     kgExposed,
-    customAnalyticsEnabled
+    customAnalyticsEnabled,
+    user?.email
   );
 
   return (
