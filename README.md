@@ -1,108 +1,80 @@
-<a name="readme-top"></a>
+# Developer Setup Guide for Onyx
 
-<h2 align="center">
-    <a href="https://www.onyx.app/?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme"> <img width="50%" src="https://github.com/onyx-dot-app/onyx/blob/logo/OnyxLogoCropped.jpg?raw=true" /></a>
-</h2>
+This guide provides step-by-step instructions for developers to set up and run the Onyx application stack using Docker Compose.
 
-<p align="center">Open Source AI Platform</p>
+## Prerequisites
 
-<p align="center">
-    <a href="https://discord.gg/TDJ59cGV2X" target="_blank">
-        <img src="https://img.shields.io/badge/discord-join-blue.svg?logo=discord&logoColor=white" alt="Discord" />
-    </a>
-    <a href="https://docs.onyx.app/?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme" target="_blank">
-        <img src="https://img.shields.io/badge/docs-view-blue" alt="Documentation" />
-    </a>
-    <a href="https://www.onyx.app/?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme" target="_blank">
-        <img src="https://img.shields.io/website?url=https://www.onyx.app&up_message=visit&up_color=blue" alt="Documentation" />
-    </a>
-    <a href="https://github.com/onyx-dot-app/onyx/blob/main/LICENSE" target="_blank">
-        <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=blue" alt="License" />
-    </a>
-</p>
+Ensure you have the following installed on your machine:
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/12516" target="_blank">
-    <img src="https://trendshift.io/api/badge/repositories/12516" alt="onyx-dot-app/onyx | Trendshift" style="width: 250px; height: 55px;" />
-  </a>
-</p>
+* Docker Engine and Docker Compose (included with Docker Desktop)
+* Git
+* Recommended: 8GB+ RAM assigned to Docker
 
+## 1. Clone the Repository
 
-**[Onyx](https://www.onyx.app/?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme)** is a feature-rich, self-hostable Chat UI that works with any LLM. It is easy to deploy and can run in a completely airgapped environment.
+Clone the full repository to your local machine:
+```bash
+git clone <repository-url> thiernope-onyx
+cd thiernope-onyx
+```
 
-Onyx comes loaded with advanced features like Agents, Web Search, RAG, MCP, Deep Research, Connectors to 40+ knowledge sources, and more.
+## 2. Environment Configuration
 
-> [!TIP]
-> Run Onyx with one command (or see deployment section below):
-> ```
-> curl -fsSL https://raw.githubusercontent.com/onyx-dot-app/onyx/main/deployment/docker_compose/install.sh > install.sh && chmod +x install.sh && ./install.sh
-> ```
+Navigate to the `deployment/docker_compose` directory, which contains the container configurations:
+```bash
+cd deployment/docker_compose
+```
 
-****
+Create your local environment file by copying the template:
+```bash
+cp env.template .env
+```
 
-![Onyx Chat Silent Demo](https://github.com/onyx-dot-app/onyx/releases/download/v0.21.1/OnyxChatSilentDemo.gif)
+> **TIP:** You can leave the default values in `.env` for a standard local development setup. If you need to customize authentication or external keys (like OpenAI), edit `.env` now.
 
+## 3. Running the Containers
 
+For development, you likely want to run the full stack (Frontend, Backend, DB, etc.) and expose ports for local access. We use `docker-compose.dev.yml` to override default settings and expose ports (e.g., Frontend on 3000, Backend on 8080).
 
-## ⭐ Features
-- **🤖 Custom Agents:** Build AI Agents with unique instructions, knowledge and actions.
-- **🌍 Web Search:** Browse the web with Google PSE, Exa, and Serper as well as an in-house scraper or Firecrawl.
-- **🔍 RAG:** Best in class hybrid-search + knowledge graph for uploaded files and ingested documents from connectors. 
-- **🔄 Connectors:** Pull knowledge, metadata, and access information from over 40 applications.
-- **🔬 Deep Research:** Get in depth answers with an agentic multi-step search.
-- **▶️ Actions & MCP:** Give AI Agents the ability to interact with external systems.
-- **💻 Code Interpreter:** Execute code to analyze data, render graphs and create files.
-- **🎨 Image Generation:** Generate images based on user prompts.
-- **👥 Collaboration:** Chat sharing, feedback gathering, user management, usage analytics, and more.
+### Start the Stack
 
-Onyx works with all LLMs (like OpenAI, Anthropic, Gemini, etc.) and self-hosted LLMs (like Ollama, vLLM, etc.)
+Run the following command to build and start the containers in the background:
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build --remove-orphans
+```
 
-To learn more about the features, check out our [documentation](https://docs.onyx.app/welcome?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme)!
+* `-f docker-compose.yml`: Uses the base service definitions
+* `-f docker-compose.dev.yml`: Adds development overrides (exposes ports)
+* `--build`: Forces a rebuild of images from your local source code (essential if you are modifying code)
+* `-d`: Detached mode (runs in background)
 
+### Stop the Stack
 
+To stop the containers:
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+```
 
-## 🚀 Deployment
-Onyx supports deployments in Docker, Kubernetes, Terraform, along with guides for major cloud providers.
+To stop and remove all data (clean slate):
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+```
 
-See guides below:
-- [Docker](https://docs.onyx.app/deployment/local/docker?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme) or [Quickstart](https://docs.onyx.app/deployment/getting_started/quickstart?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme) (best for most users)
-- [Kubernetes](https://docs.onyx.app/deployment/local/kubernetes?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme) (best for large teams)
-- [Terraform](https://docs.onyx.app/deployment/local/terraform?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme) (best for teams already using Terraform)
-- Cloud specific guides (best if specifically using [AWS EKS](https://docs.onyx.app/deployment/cloud/aws/eks?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme), [Azure VMs](https://docs.onyx.app/deployment/cloud/azure?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme), etc.)
+## 4. Accessing the Application
 
-> [!TIP]  
-> **To try Onyx for free without deploying, check out [Onyx Cloud](https://cloud.onyx.app/signup?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme)**.
+Once running, access the services at:
 
+* **Web UI:** http://localhost:3000
+* **API Server:** http://localhost:8080
+* **Postgres DB:** Port `5435` (mapped from 5432)
+* **MinIO (S3):** Port `9004` (Console: `9005`)
 
+## 5. Troubleshooting / Notes
 
-## 🔍 Other Notable Benefits
-Onyx is built for teams of all sizes, from individual users to the largest global enterprises.
-
-- **Enterprise Search**: far more than simple RAG, Onyx has custom indexing and retrieval that remains performant and accurate for scales of up to tens of millions of documents.
-- **Security**: SSO (OIDC/SAML/OAuth2), RBAC, encryption of credentials, etc.
-- **Management UI**: different user roles such as basic, curator, and admin.
-- **Document Permissioning**: mirrors user access from external apps for RAG use cases.
-
-
-
-## 🚧 Roadmap
-To see ongoing and upcoming projects, check out our [roadmap](https://github.com/orgs/onyx-dot-app/projects/2)!
-
-
-
-## 📚 Licensing
-There are two editions of Onyx:
-
-- Onyx Community Edition (CE) is available freely under the MIT license.
-- Onyx Enterprise Edition (EE) includes extra features that are primarily useful for larger organizations.
-For feature details, check out [our website](https://www.onyx.app/pricing?utm_source=onyx_repo&utm_medium=github&utm_campaign=readme).
-
-
-
-## 👪 Community
-Join our open source community on **[Discord](https://discord.gg/TDJ59cGV2X)**!
-
-
-
-## 💡 Contributing
-Looking to contribute? Please check out the [Contribution Guide](CONTRIBUTING.md) for more details.
+* **Initial Startup Time:** The first startup may take a few minutes as database migrations run and models download.
+* **Nginx Errors:** If Nginx crashes with "host not found", it usually means the `api_server` or `web_server` isn't ready yet. It will auto-restart until they are up.
+* **Rebuilding:** If you change `backend` or `web` code, remember to run `docker compose ... up -d --build` to apply changes.
+* **Logs:** View logs for a specific service (e.g., api_server) with:
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f api_server
+```
