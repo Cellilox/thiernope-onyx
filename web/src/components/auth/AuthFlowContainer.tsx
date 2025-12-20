@@ -10,6 +10,8 @@ export default function AuthFlowContainer({
   authState?: "signup" | "login" | "join";
   footerContent?: React.ReactNode;
 }) {
+  const adminKey = process.env.NEXT_PUBLIC_ADMIN_ACCESS_KEY || "true";
+
   return (
     <div className="p-4 flex flex-col items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md flex items-start flex-col bg-background-tint-00 rounded-16 shadow-lg shadow-02 p-6">
@@ -27,7 +29,7 @@ export default function AuthFlowContainer({
             <>
               New to Cellilox?{" "}
               <Link
-                href="/auth/signup"
+                href={`/auth/signup?admin=${adminKey}`}
                 className="text-text-05 mainUiAction underline transition-colors duration-200"
               >
                 Create an Account
@@ -40,7 +42,7 @@ export default function AuthFlowContainer({
         <div className="text-sm mt-6 text-center w-full text-text-03 mainUiBody mx-auto">
           Already have an account?{" "}
           <Link
-            href="/auth/login"
+            href={`/auth/login?admin=${adminKey}`}
             className="text-text-05 mainUiAction underline transition-colors duration-200"
           >
             Sign In
