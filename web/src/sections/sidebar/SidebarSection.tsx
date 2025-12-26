@@ -19,7 +19,7 @@ export default function SidebarSection({
 }: SidebarSectionProps) {
   return (
     <div className={cn("flex flex-col", className)}>
-      <div className="px-2 py-1 sticky top-[0rem] bg-background-tint-02 z-10 flex flex-row items-center justify-between min-h-[2rem]">
+      <div className="px-2 py-1 sticky top-[0rem] bg-daxno-cream z-10 flex flex-row items-center justify-between min-h-[2rem]">
         <Text secondaryBody text02>
           {title}
         </Text>

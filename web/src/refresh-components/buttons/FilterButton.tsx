@@ -11,8 +11,8 @@ import SvgX from "@/icons/x";
 const buttonClasses = (transient?: boolean) =>
   ({
     active: [
-      "bg-background-tint-inverted-03",
-      "hover:bg-background-tint-inverted-04",
+      "bg-daxno",
+      "hover:bg-daxno/90",
       transient && "bg-background-tint-inverted-04",
       "active:bg-background-tint-inverted-02",
     ],
@@ -25,7 +25,7 @@ const buttonClasses = (transient?: boolean) =>
   }) as const;
 
 const textClasses = (transient?: boolean) => ({
-  active: ["text-text-inverted-05"],
+  active: ["text-white"],
   inactive: [
     "text-text-03",
     "group-hover/FilterButton:text-text-04",
@@ -38,10 +38,10 @@ const iconClasses = (transient?: boolean) =>
   ({
     active: ["stroke-text-inverted-05"],
     inactive: [
-      "stroke-text-03",
-      "group-hover/FilterButton:stroke-text-04",
-      transient && "stroke-text-04",
-      "group-active/FilterButton:stroke-text-05",
+      "stroke-daxno-muted",
+      "group-hover/FilterButton:stroke-daxno",
+      transient && "stroke-daxno",
+      "group-active/FilterButton:stroke-daxno",
     ],
   }) as const;
 

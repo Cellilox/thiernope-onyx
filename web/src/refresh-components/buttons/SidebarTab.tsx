@@ -10,8 +10,8 @@ import Truncated from "@/refresh-components/texts/Truncated";
 const backgroundClasses = (active?: boolean) =>
   ({
     defaulted: [
-      active ? "bg-background-tint-00" : "bg-transparent",
-      "hover:bg-background-tint-03",
+      active ? "bg-daxno/10" : "bg-transparent",
+      "hover:bg-daxno/10",
     ],
     lowlight: [
       active ? "bg-background-tint-00" : "bg-transparent",
@@ -26,8 +26,8 @@ const backgroundClasses = (active?: boolean) =>
 const textClasses = (active: boolean | undefined) =>
   ({
     defaulted: [
-      active ? "text-text-04" : "text-text-03",
-      "group-hover/SidebarTab:text-text-04",
+      active ? "text-daxno font-semibold" : "text-text-03",
+      "group-hover/SidebarTab:text-daxno",
     ],
     lowlight: [
       active ? "text-text-03" : "text-text-02",
@@ -39,11 +39,11 @@ const textClasses = (active: boolean | undefined) =>
 const iconClasses = (active: boolean | undefined) =>
   ({
     defaulted: [
-      active ? "stroke-text-04" : "stroke-text-03",
+      active ? "stroke-text-04" : "stroke-daxno-muted",
       "group-hover/SidebarTab:stroke-text-04",
     ],
     lowlight: [
-      active ? "stroke-text-03" : "stroke-text-02",
+      active ? "stroke-text-03" : "stroke-daxno-muted",
       "group-hover/SidebarTab:stroke-text-03",
     ],
     focused: ["stroke-text-02"],

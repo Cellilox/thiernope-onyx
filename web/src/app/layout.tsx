@@ -13,7 +13,8 @@ import {
 } from "@/lib/constants";
 import { Metadata } from "next";
 import { buildClientUrl } from "@/lib/utilsSS";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import {
   EnterpriseSettings,
   ApplicationStatus,
@@ -33,13 +34,24 @@ import AccessRestrictedPage from "@/components/errorPages/AccessRestrictedPage";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { fetchAppSidebarMetadata } from "@/lib/appSidebarSS";
 
+/*
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
 });
+*/
 
-
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   let logoLocation = buildClientUrl("/cellilox-logo.png");
@@ -84,7 +96,7 @@ export default async function RootLayout({
   const getPageContent = async (content: React.ReactNode) => (
     <html
       lang="en"
-      className={`${inter.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -119,7 +131,7 @@ export default async function RootLayout({
         )}
       </head>
 
-      <body className={`relative ${inter.variable} font-hanken`}>
+      <body className={`relative antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

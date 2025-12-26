@@ -13,7 +13,7 @@ export interface VerticalShadowScrollerProps
 
 export default function OverflowDiv({
   disableMask,
-  backgroundColor = "var(--background-tint-02)",
+  backgroundColor = "#fefce8",
   height: minHeight = "2rem",
 
   className,

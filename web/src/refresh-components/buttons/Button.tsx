@@ -127,9 +127,9 @@ const textClasses = (transient?: boolean) =>
       secondary: {
         enabled: [
           "text-text-03",
-          "group-hover/Button:text-text-04",
-          transient && "text-text-04",
-          "group-active/Button:text-text-05",
+          "group-hover/Button:text-daxno",
+          transient && "text-daxno",
+          "group-active/Button:text-daxno",
         ],
         disabled: ["text-text-01"],
       },
@@ -199,28 +199,28 @@ const iconClasses = (transient?: boolean) =>
       },
       secondary: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },
       tertiary: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },
       internal: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },

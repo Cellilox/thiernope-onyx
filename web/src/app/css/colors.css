@@ -349,9 +349,9 @@
   --highlight-accent: var(--neon-magenta-60);
 
   /* Shadow */
-  --shadow-01: var(--alpha-grey-100-05);
-  --shadow-02: var(--alpha-grey-100-10);
-  --shadow-03: var(--alpha-grey-100-20);
+  --shadow-01: #2B46900d;
+  --shadow-02: #2B46901a;
+  --shadow-03: #2B469033;
 
   /* Mask */
   --mask-01: var(--alpha-grey-100-10);

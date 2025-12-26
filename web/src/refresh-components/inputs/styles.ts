@@ -17,9 +17,9 @@ export const innerClasses: ClassNamesMap = {
 } as const;
 
 export const iconClasses: ClassNamesMap = {
-  main: "stroke-text-03",
-  internal: "stroke-text-03",
-  error: "stroke-text-03",
+  main: "stroke-daxno-muted",
+  internal: "stroke-daxno-muted",
+  error: "stroke-daxno-muted",
   disabled: "stroke-text-01",
 } as const;
 
