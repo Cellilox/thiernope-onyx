@@ -246,18 +246,18 @@ export default function AgentsPage() {
     // Create grouped action items
     type ActionItem =
       | {
-          type: "tool";
-          id: number;
-          name: string;
-          display_name: string;
-          mcp_server_id?: number | null;
-        }
+        type: "tool";
+        id: number;
+        name: string;
+        display_name: string;
+        mcp_server_id?: number | null;
+      }
       | {
-          type: "mcp_group";
-          mcp_server_id: number;
-          server_name: string;
-          tools: Array<{ id: number; name: string; display_name: string }>;
-        };
+        type: "mcp_group";
+        mcp_server_id: number;
+        server_name: string;
+        tools: Array<{ id: number; name: string; display_name: string }>;
+      };
 
     const mcpGroupItems: ActionItem[] = Array.from(mcpGroupsMap.entries()).map(
       ([serverId, tools]) => {
@@ -411,7 +411,11 @@ export default function AgentsPage() {
   }, [selectedActionIds, selectedMcpServerIds, uniqueActions]);
 
   return (
-    <PageLayout data-testid="AgentsPage/container" aria-label="Agents Page">
+    <PageLayout
+      className="w-full max-w-[50rem]"
+      data-testid="AgentsPage/container"
+      aria-label="Agents Page"
+    >
       <PageHeader
         icon={SvgOnyxOctagon}
         title="Agents & Assistants"

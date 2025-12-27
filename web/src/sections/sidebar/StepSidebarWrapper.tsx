@@ -25,7 +25,7 @@ export default function StepSidebar({
       <div className="px-2">
         <SidebarTab
           leftIcon={buttonIcon}
-          className="bg-background-tint-00"
+
           href={buttonHref}
           folded={folded}
         >
