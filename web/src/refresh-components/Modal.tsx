@@ -74,11 +74,11 @@ const useModalContext = () => {
  * Size class names mapping for modal variants
  */
 const sizeClassNames = {
-  large: ["w-[80dvw]", "h-[80dvh]"],
-  medium: ["w-[60rem]", "h-fit"],
-  small: ["w-[32rem]", "max-h-[30rem]"],
-  tall: ["w-[32rem]", "max-h-[calc(100dvh-4rem)]"],
-  mini: ["w-[32rem]", "h-fit"],
+  large: ["w-[90vw] md:w-[80dvw]", "h-[80dvh]"],
+  medium: ["w-[90vw] md:w-[60rem]", "h-fit"],
+  small: ["w-[90vw] md:w-[32rem]", "max-h-[30rem]"],
+  tall: ["w-[90vw] md:w-[32rem]", "max-h-[calc(100dvh-4rem)]"],
+  mini: ["w-[90vw] md:w-[32rem]", "h-fit"],
 } as const;
 
 /**
@@ -419,7 +419,7 @@ ModalHeader.displayName = "ModalHeader";
  * </Modal.Body>
  * ```
  */
-interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> { }
 const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(
   ({ className, children, ...props }, ref) => {
     return (
@@ -455,7 +455,7 @@ ModalBody.displayName = "ModalBody";
  * </Modal.Footer>
  * ```
  */
-interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> { }
 const ModalFooter = React.forwardRef<HTMLDivElement, ModalFooterProps>(
   ({ className, children, ...props }, ref) => {
     return (
