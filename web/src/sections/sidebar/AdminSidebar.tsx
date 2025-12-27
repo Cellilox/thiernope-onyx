@@ -348,7 +348,7 @@ function AdminSidebarInner({
         }
         footer={
           <div className="flex flex-col gap-2">
-            {settings.webVersion && (
+            {!folded && settings.webVersion && (
               <Text text02 secondaryBody className="px-2">
                 {`Cellilox version: ${settings.webVersion}`}
               </Text>
@@ -358,7 +358,7 @@ function AdminSidebarInner({
         }
       >
         {items.map((collection, index) => (
-          <SidebarSection key={index} title={collection.name}>
+          <SidebarSection key={index} title={collection.name} folded={folded}>
             <div className="flex flex-col w-full">
               {collection.items.map(({ link, icon: Icon, name }, index) => (
                 <SidebarTab

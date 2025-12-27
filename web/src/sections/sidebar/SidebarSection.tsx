@@ -9,6 +9,7 @@ export interface SidebarSectionProps {
   children?: React.ReactNode;
   action?: React.ReactNode;
   className?: string;
+  folded?: boolean;
 }
 
 export default function SidebarSection({
@@ -16,15 +17,18 @@ export default function SidebarSection({
   children,
   action,
   className,
+  folded = false,
 }: SidebarSectionProps) {
   return (
     <div className={cn("flex flex-col", className)}>
-      <div className="px-2 py-1 sticky top-[0rem] bg-daxno-cream z-10 flex flex-row items-center justify-between min-h-[2rem]">
-        <Text secondaryBody text02>
-          {title}
-        </Text>
-        {action && <div className="flex-shrink-0">{action}</div>}
-      </div>
+      {!folded && (
+        <div className="px-2 py-1 sticky top-[0rem] bg-daxno-cream z-10 flex flex-row items-center justify-between min-h-[2rem]">
+          <Text secondaryBody text02>
+            {title}
+          </Text>
+          {action && <div className="flex-shrink-0">{action}</div>}
+        </div>
+      )}
       <div>{children}</div>
     </div>
   );
