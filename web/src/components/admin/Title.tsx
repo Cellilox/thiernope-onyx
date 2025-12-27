@@ -7,7 +7,7 @@ import { IconProps } from "@/icons";
 import Text from "@/refresh-components/texts/Text";
 
 export interface AdminPageTitleProps {
-  icon: React.FunctionComponent<IconProps> | React.ReactNode;
+  icon?: React.FunctionComponent<IconProps> | React.ReactNode;
   title: string | JSX.Element;
   farRightElement?: JSX.Element;
   includeDivider?: boolean;
@@ -17,7 +17,7 @@ export function AdminPageTitle({
   icon: Icon,
   title,
   farRightElement,
-  includeDivider = true,
+  includeDivider = false,
 }: AdminPageTitleProps) {
   return (
     <div className="w-full">

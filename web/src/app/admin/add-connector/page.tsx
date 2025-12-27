@@ -252,9 +252,9 @@ export default function Page() {
           const existingFederatedConnector =
             firstSource.federated && federatedConnectors
               ? federatedConnectors.find(
-                  (connector) =>
-                    connector.source === `federated_${firstSource.internalName}`
-                )
+                (connector) =>
+                  connector.source === `federated_${firstSource.internalName}`
+              )
               : null;
 
           const url = existingFederatedConnector
@@ -270,7 +270,7 @@ export default function Page() {
   return (
     <div className="mx-auto container">
       <AdminPageTitle
-        icon={SvgUploadCloud}
+        // icon={SvgUploadCloud}
         title="Add Connector"
         farRightElement={
           <Button href="/admin/indexing/status" primary>

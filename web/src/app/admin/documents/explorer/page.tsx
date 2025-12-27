@@ -12,7 +12,7 @@ export default async function Page(props: {
   return (
     <div className="mx-auto container">
       <AdminPageTitle
-        icon={<SvgZoomIn className="stroke-text-04 h-8 w-8" />}
+        // icon={<SvgZoomIn className="stroke-text-04 h-8 w-8" />}
         title="Document Explorer"
       />
 
