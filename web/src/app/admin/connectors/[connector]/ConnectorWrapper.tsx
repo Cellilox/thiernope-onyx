@@ -13,6 +13,11 @@ import useSWR from "swr";
 import { errorHandlingFetcher } from "@/lib/fetcher";
 import { buildSimilarCredentialInfoURL } from "@/app/admin/connector/[ccPairId]/lib";
 import { Credential } from "@/lib/connectors/credentials";
+import { ConnectorSidebarProvider, useConnectorSidebarContext } from "@/sections/sidebar/ConnectorSidebarContext";
+import IconButton from "@/refresh-components/buttons/IconButton";
+import SvgSidebar from "@/icons/sidebar";
+import useScreenSize from "@/hooks/useScreenSize";
+import { cn } from "@/lib/utils";
 
 export default function ConnectorWrapper({
   connector,
@@ -82,8 +87,8 @@ export default function ConnectorWrapper({
   // For federated form, use the specialized form without FormProvider
   if (showFederatedForm) {
     return (
-      <div className="flex justify-center w-full h-full">
-        <div className="mt-12 w-full max-w-4xl mx-auto">
+      <div className="flex w-full h-full px-4 md:px-0">
+        <div className="mt-12 w-full md:max-w-4xl mx-auto">
           <FederatedConnectorForm connector={connector} />
         </div>
       </div>
@@ -93,12 +98,36 @@ export default function ConnectorWrapper({
   // For regular connectors, use the existing flow
   return (
     <FormProvider connector={connector}>
-      <div className="flex justify-center w-full h-full">
-        <Sidebar />
-        <div className="mt-12 w-full max-w-3xl mx-auto">
+      <ConnectorSidebarProvider>
+        <ConnectorContent connector={connector} />
+      </ConnectorSidebarProvider>
+    </FormProvider>
+  );
+}
+
+// Separate component to use context
+function ConnectorContent({ connector }: { connector: ConfigurableSources }) {
+  const { folded, setFolded } = useConnectorSidebarContext();
+  const { isMobile } = useScreenSize();
+
+  return (
+    <div className="flex w-full h-full">
+      <Sidebar />
+      <div className="w-full flex flex-col">
+        {/* Mobile menu button - only show on mobile when sidebar is folded */}
+        {isMobile && folded && (
+          <div className="flex-shrink-0 p-4">
+            <IconButton
+              icon={SvgSidebar}
+              onClick={() => setFolded(false)}
+              internal
+            />
+          </div>
+        )}
+        <div className="mt-12 w-full px-4 md:max-w-3xl md:mx-auto">
           <AddConnector connector={connector} />
         </div>
       </div>
-    </FormProvider>
+    </div>
   );
 }

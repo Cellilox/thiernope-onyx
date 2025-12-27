@@ -292,7 +292,7 @@ export default function Page() {
       {dedupedPopular.length > 0 && (
         <div className="pt-8">
           <Text headingH3>Popular</Text>
-          <div className="flex flex-wrap gap-4 p-4">
+          <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
             {dedupedPopular.map((source) => (
               <SourceTileTooltipWrapper
                 preSelect={false}
@@ -311,7 +311,7 @@ export default function Page() {
         .map(([category, sources], categoryInd) => (
           <div key={category} className="pt-8">
             <Text headingH3>{category}</Text>
-            <div className="flex flex-wrap gap-4 p-4">
+            <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
               {sources.map((source, sourceInd) => (
                 <SourceTileTooltipWrapper
                   preSelect={
