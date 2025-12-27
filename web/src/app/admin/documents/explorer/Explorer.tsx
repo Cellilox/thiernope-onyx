@@ -190,7 +190,7 @@ export function Explorer({
             }
           }}
           role="textarea"
-          className="w-96"
+          className="w-full md:w-96"
         />
 
         <HorizontalFilters
