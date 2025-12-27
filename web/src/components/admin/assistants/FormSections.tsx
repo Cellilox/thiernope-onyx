@@ -17,7 +17,7 @@ export const NameField = memo(function NameField() {
       {({ field }: any) => (
         <TextFormField
           {...field}
-          maxWidth="max-w-lg"
+          maxWidth="max-w-2xl"
           name="name"
           label="Name"
           placeholder="Email Assistant"
@@ -36,7 +36,7 @@ export const DescriptionField = memo(function DescriptionField() {
       {({ field }: any) => (
         <TextFormField
           {...field}
-          maxWidth="max-w-lg"
+          maxWidth="max-w-2xl"
           name="description"
           label="Description"
           placeholder="Use this Assistant to help draft professional emails"
@@ -54,7 +54,7 @@ export const SystemPromptField = memo(function SystemPromptField() {
       {({ field }: any) => (
         <TextFormField
           {...field}
-          maxWidth="max-w-4xl"
+          maxWidth="max-w-full"
           name="system_prompt"
           label="Instructions"
           isTextArea={true}
@@ -74,7 +74,7 @@ export const TaskPromptField = memo(function TaskPromptField() {
       {({ field, form }: any) => (
         <TextFormField
           {...field}
-          maxWidth="max-w-4xl"
+          maxWidth="max-w-full"
           name="task_prompt"
           label="[Optional] Reminders"
           isTextArea={true}
@@ -164,9 +164,8 @@ export const MCPServerSection = memo(function MCPServerSection({
         <div className="ml-7 space-y-2">
           {serverTools.map((tool) => (
             <FastField
-              key={`${tool.id}-${
-                expandedToolDescriptions[tool.id] ? "expanded" : "collapsed"
-              }`}
+              key={`${tool.id}-${expandedToolDescriptions[tool.id] ? "expanded" : "collapsed"
+                }`}
               name={`enabled_tools_map.${tool.id}`}
             >
               {({ field, form }: any) => (
@@ -186,14 +185,14 @@ export const MCPServerSection = memo(function MCPServerSection({
                     </div>
                     <div className="text-xs text-gray-600">
                       {tool.description &&
-                      tool.description.length > MAX_DESCRIPTION_LENGTH ? (
+                        tool.description.length > MAX_DESCRIPTION_LENGTH ? (
                         <>
                           {expandedToolDescriptions[tool.id]
                             ? tool.description
                             : `${tool.description.slice(
-                                0,
-                                MAX_DESCRIPTION_LENGTH
-                              )}... `}
+                              0,
+                              MAX_DESCRIPTION_LENGTH
+                            )}... `}
                           <button
                             type="button"
                             className="ml-1 text-blue-500 underline text-xs focus:outline-none"

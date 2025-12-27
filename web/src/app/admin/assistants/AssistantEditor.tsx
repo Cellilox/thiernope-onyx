@@ -1582,6 +1582,7 @@ export default function AssistantEditor({
                             name="num_chunks"
                             label="[Optional] Number of Context Documents"
                             placeholder="Default 10"
+                            width="max-w-2xl"
                             onChange={(e) => {
                               const value = e.target.value;
                               if (value === "" || /^[0-9]+$/.test(value)) {
@@ -1591,7 +1592,7 @@ export default function AssistantEditor({
                           />
 
                           <TextFormField
-                            width="max-w-xl"
+                            width="max-w-2xl"
                             type="date"
                             small
                             subtext="Documents prior to this date will be ignored."
