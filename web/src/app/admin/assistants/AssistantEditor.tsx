@@ -390,7 +390,7 @@ export default function AssistantEditor({
   // Removed invalid helper; replacement happens inline in the upload handler using the beginUpload onSuccess callback
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto w-full">
       <style>
         {`
           .assistant-editor input::placeholder,
@@ -560,9 +560,9 @@ export default function AssistantEditor({
             users: values.is_public
               ? undefined
               : [
-                  ...(user && !checkUserIsNoAuthUser(user.id) ? [user.id] : []),
-                  ...values.selectedUsers.map((u: MinimalUserSnapshot) => u.id),
-                ],
+                ...(user && !checkUserIsNoAuthUser(user.id) ? [user.id] : []),
+                ...values.selectedUsers.map((u: MinimalUserSnapshot) => u.id),
+              ],
             tool_ids: enabledTools,
             remove_image: removePersonaImage,
             search_start_date: values.search_start_date
@@ -723,7 +723,7 @@ export default function AssistantEditor({
                   )}
                 </p>
 
-                <div className="max-w-4xl w-full">
+                <div className="w-full">
                   <Separator />
                   <div className="flex gap-x-2 items-center">
                     <div className="block font-medium text-sm">Agent Icon</div>
@@ -776,11 +776,10 @@ export default function AssistantEditor({
                           }}
                           leftIcon={SvgTrash}
                         >
-                          {`${
-                            removePersonaImage
-                              ? "Revert to Previous "
-                              : "Remove "
-                          } Image`}
+                          {`${removePersonaImage
+                            ? "Revert to Previous "
+                            : "Remove "
+                            } Image`}
                         </Button>
                       )}
 
@@ -827,7 +826,7 @@ export default function AssistantEditor({
 
                 <SystemPromptField />
 
-                <div className="w-full max-w-4xl">
+                <div className="w-full">
                   <div className="flex flex-col">
                     <Separator />
                     <div className="flex gap-x-2 py-2 justify-start">
@@ -841,19 +840,17 @@ export default function AssistantEditor({
                             disabled={connectorsExist}
                           >
                             <div
-                              className={`${
-                                !connectorsExist || !searchTool
-                                  ? "opacity-70 cursor-not-allowed"
-                                  : ""
-                              }`}
+                              className={`${!connectorsExist || !searchTool
+                                ? "opacity-70 cursor-not-allowed"
+                                : ""
+                                }`}
                             >
                               <UnlabeledSwitchField
                                 onCheckedChange={() =>
                                   toggleToolInValues(searchTool?.id || -1)
                                 }
-                                name={`enabled_tools_map.${
-                                  searchTool?.id || -1
-                                }`}
+                                name={`enabled_tools_map.${searchTool?.id || -1
+                                  }`}
                                 disabled={!connectorsExist || !searchTool}
                               />
                             </div>
@@ -864,316 +861,314 @@ export default function AssistantEditor({
 
                     {((searchTool && values.enabled_tools_map[searchTool.id]) ||
                       !connectorsExist) && (
-                      <div>
-                        {canShowKnowledgeSource && (
-                          <div className="mt-1.5 mb-2.5">
-                            <div className="flex gap-2.5">
-                              <div
-                                className={`w-[150px] h-[110px] rounded-lg border flex flex-col items-center justify-center cursor-pointer transition-all ${
-                                  values.knowledge_source === "team_knowledge"
+                        <div>
+                          {canShowKnowledgeSource && (
+                            <div className="mt-1.5 mb-2.5">
+                              <div className="flex flex-wrap gap-2.5">
+                                <div
+                                  className={`w-[150px] flex-none h-[110px] rounded-lg border flex flex-col items-center justify-center cursor-pointer transition-all ${values.knowledge_source === "team_knowledge"
                                     ? "border-2 border-blue-500 bg-blue-50 dark:bg-blue-950/20"
                                     : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
-                                }`}
-                                onClick={() =>
-                                  setFieldValue(
-                                    "knowledge_source",
-                                    "team_knowledge"
-                                  )
-                                }
-                              >
-                                <div className="text-blue-500 mb-2">
-                                  <BookIcon size={24} />
-                                </div>
-                                <p className="font-medium text-xs">
-                                  Team Knowledge
-                                </p>
-                              </div>
-
-                              {userKnowledgeEnabled && (
-                                <div
-                                  className={`w-[150px] h-[110px] rounded-lg border flex flex-col items-center justify-center cursor-pointer transition-all ${
-                                    values.knowledge_source === "user_files"
-                                      ? "border-2 border-blue-500 bg-blue-50 dark:bg-blue-950/20"
-                                      : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
-                                  }`}
+                                    }`}
                                   onClick={() =>
                                     setFieldValue(
                                       "knowledge_source",
-                                      "user_files"
+                                      "team_knowledge"
                                     )
                                   }
                                 >
                                   <div className="text-blue-500 mb-2">
-                                    <FileIcon size={24} />
+                                    <BookIcon size={24} />
                                   </div>
                                   <p className="font-medium text-xs">
-                                    User Knowledge
+                                    Team Knowledge
                                   </p>
                                 </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
 
-                        {values.knowledge_source === "user_files" &&
-                          !existingPersona?.is_default_persona && (
-                            <div className="text-sm flex flex-col items-start">
-                              <SubLabel>Click below to add files</SubLabel>
-                              {values.user_file_ids.length > 0 && (
-                                <div className="flex gap-1">
-                                  {(() => {
-                                    // Detect if there are any non-image files in the displayed files
-                                    const displayedFileIds =
-                                      values.user_file_ids.slice(0, 4);
-                                    const displayedFiles: ProjectFile[] =
-                                      displayedFileIds.map(
-                                        (userFileId: string) => {
-                                          const rf = allRecentFiles.find(
-                                            (f) => f.id === userFileId
+                                {userKnowledgeEnabled && (
+                                  <div
+                                    className={`w-[150px] flex-none h-[110px] rounded-lg border flex flex-col items-center justify-center cursor-pointer transition-all ${values.knowledge_source === "user_files"
+                                      ? "border-2 border-blue-500 bg-blue-50 dark:bg-blue-950/20"
+                                      : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
+                                      }`}
+                                    onClick={() =>
+                                      setFieldValue(
+                                        "knowledge_source",
+                                        "user_files"
+                                      )
+                                    }
+                                  >
+                                    <div className="text-blue-500 mb-2">
+                                      <FileIcon size={24} />
+                                    </div>
+                                    <p className="font-medium text-xs">
+                                      User Knowledge
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {values.knowledge_source === "user_files" &&
+                            !existingPersona?.is_default_persona && (
+                              <div className="text-sm flex flex-col items-start">
+                                <SubLabel>Click below to add files</SubLabel>
+                                {values.user_file_ids.length > 0 && (
+                                  <div className="flex gap-1">
+                                    {(() => {
+                                      // Detect if there are any non-image files in the displayed files
+                                      const displayedFileIds =
+                                        values.user_file_ids.slice(0, 4);
+                                      const displayedFiles: ProjectFile[] =
+                                        displayedFileIds.map(
+                                          (userFileId: string) => {
+                                            const rf = allRecentFiles.find(
+                                              (f) => f.id === userFileId
+                                            );
+                                            return (
+                                              rf ||
+                                              ({
+                                                id: userFileId,
+                                                name: `File ${userFileId.slice(
+                                                  0,
+                                                  8
+                                                )}`,
+                                                status: UserFileStatus.COMPLETED,
+                                              } as ProjectFile)
+                                            );
+                                          }
+                                        );
+                                      const shouldCompactImages =
+                                        hasNonImageFiles(displayedFiles);
+
+                                      return displayedFiles.map((fileData) => {
+                                        return (
+                                          <div key={fileData.id}>
+                                            <FileCard
+                                              file={fileData as ProjectFile}
+                                              hideProcessingState
+                                              removeFile={() => {
+                                                setFieldValue(
+                                                  "user_file_ids",
+                                                  values.user_file_ids.filter(
+                                                    (id: string) =>
+                                                      id !== fileData.id
+                                                  )
+                                                );
+                                              }}
+                                              compactImages={shouldCompactImages}
+                                            />
+                                          </div>
+                                        );
+                                      });
+                                    })()}
+                                    {values.user_file_ids.length > 4 && (
+                                      <button
+                                        type="button"
+                                        className="rounded-xl px-3 py-1 text-left transition-colors hover:bg-background-tint-02"
+                                        onClick={() =>
+                                          userFilesModal.toggle(true)
+                                        }
+                                      >
+                                        <div className="flex flex-col overflow-hidden h-12 p-1">
+                                          <div className="flex items-center justify-between gap-2 w-full">
+                                            <Text text04 secondaryAction>
+                                              View All
+                                            </Text>
+                                            <SvgFiles className="h-5 w-5 stroke-text-02" />
+                                          </div>
+                                          <Text text03 secondaryBody>
+                                            {values.user_file_ids.length} files
+                                          </Text>
+                                        </div>
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                                <FilePickerPopover
+                                  trigger={(open) => (
+                                    <CreateButton transient={open}>
+                                      Add User Files
+                                    </CreateButton>
+                                  )}
+                                  onFileClick={(file: ProjectFile) => {
+                                    setPresentingDocument({
+                                      document_id: `project_file__${file.file_id}`,
+                                      semantic_identifier: file.name,
+                                    });
+                                  }}
+                                  onPickRecent={(file: ProjectFile) => {
+                                    if (!values.user_file_ids.includes(file.id)) {
+                                      setFieldValue("user_file_ids", [
+                                        ...values.user_file_ids,
+                                        file.id,
+                                      ]);
+                                    }
+                                  }}
+                                  onUnpickRecent={(file: ProjectFile) => {
+                                    if (values.user_file_ids.includes(file.id)) {
+                                      setFieldValue(
+                                        "user_file_ids",
+                                        values.user_file_ids.filter(
+                                          (id: string) => id !== file.id
+                                        )
+                                      );
+                                    }
+                                  }}
+                                  handleUploadChange={async (
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                  ) => {
+                                    const files = e.target.files;
+                                    if (!files || files.length === 0) return;
+                                    try {
+                                      // Use a local tracker to avoid stale closures inside onSuccess
+                                      let selectedIds = [
+                                        ...(values.user_file_ids || []),
+                                      ];
+                                      const optimistic = await beginUpload(
+                                        Array.from(files),
+                                        null,
+                                        setPopup,
+                                        (result) => {
+                                          const uploadedFiles =
+                                            result.user_files || [];
+                                          if (uploadedFiles.length === 0) return;
+                                          const tempToFinal = new Map(
+                                            uploadedFiles
+                                              .filter((f) => f.temp_id)
+                                              .map((f) => [
+                                                f.temp_id as string,
+                                                f.id,
+                                              ])
                                           );
-                                          return (
-                                            rf ||
-                                            ({
-                                              id: userFileId,
-                                              name: `File ${userFileId.slice(
-                                                0,
-                                                8
-                                              )}`,
-                                              status: UserFileStatus.COMPLETED,
-                                            } as ProjectFile)
+                                          const replaced = (
+                                            selectedIds || []
+                                          ).map(
+                                            (id: string) =>
+                                              tempToFinal.get(id) ?? id
                                           );
+                                          const deduped = Array.from(
+                                            new Set(replaced)
+                                          );
+                                          setFieldValue("user_file_ids", deduped);
+                                          selectedIds = deduped;
+                                        },
+                                        (failedTempIds) => {
+                                          if (
+                                            !failedTempIds ||
+                                            failedTempIds.length === 0
+                                          )
+                                            return;
+                                          const filtered = (
+                                            selectedIds || []
+                                          ).filter(
+                                            (id: string) =>
+                                              !failedTempIds.includes(id)
+                                          );
+                                          setFieldValue(
+                                            "user_file_ids",
+                                            filtered
+                                          );
+                                          selectedIds = filtered;
                                         }
                                       );
-                                    const shouldCompactImages =
-                                      hasNonImageFiles(displayedFiles);
-
-                                    return displayedFiles.map((fileData) => {
-                                      return (
-                                        <div key={fileData.id}>
-                                          <FileCard
-                                            file={fileData as ProjectFile}
-                                            hideProcessingState
-                                            removeFile={() => {
-                                              setFieldValue(
-                                                "user_file_ids",
-                                                values.user_file_ids.filter(
-                                                  (id: string) =>
-                                                    id !== fileData.id
-                                                )
-                                              );
-                                            }}
-                                            compactImages={shouldCompactImages}
-                                          />
-                                        </div>
+                                      const optimisticIds = optimistic.map(
+                                        (f) => f.id
                                       );
-                                    });
-                                  })()}
-                                  {values.user_file_ids.length > 4 && (
-                                    <button
-                                      type="button"
-                                      className="rounded-xl px-3 py-1 text-left transition-colors hover:bg-background-tint-02"
-                                      onClick={() =>
-                                        userFilesModal.toggle(true)
-                                      }
-                                    >
-                                      <div className="flex flex-col overflow-hidden h-12 p-1">
-                                        <div className="flex items-center justify-between gap-2 w-full">
-                                          <Text text04 secondaryAction>
-                                            View All
-                                          </Text>
-                                          <SvgFiles className="h-5 w-5 stroke-text-02" />
-                                        </div>
-                                        <Text text03 secondaryBody>
-                                          {values.user_file_ids.length} files
-                                        </Text>
-                                      </div>
-                                    </button>
-                                  )}
-                                </div>
-                              )}
-                              <FilePickerPopover
-                                trigger={(open) => (
-                                  <CreateButton transient={open}>
-                                    Add User Files
-                                  </CreateButton>
-                                )}
-                                onFileClick={(file: ProjectFile) => {
-                                  setPresentingDocument({
-                                    document_id: `project_file__${file.file_id}`,
-                                    semantic_identifier: file.name,
-                                  });
-                                }}
-                                onPickRecent={(file: ProjectFile) => {
-                                  if (!values.user_file_ids.includes(file.id)) {
-                                    setFieldValue("user_file_ids", [
-                                      ...values.user_file_ids,
-                                      file.id,
-                                    ]);
-                                  }
-                                }}
-                                onUnpickRecent={(file: ProjectFile) => {
-                                  if (values.user_file_ids.includes(file.id)) {
-                                    setFieldValue(
-                                      "user_file_ids",
-                                      values.user_file_ids.filter(
-                                        (id: string) => id !== file.id
-                                      )
-                                    );
-                                  }
-                                }}
-                                handleUploadChange={async (
-                                  e: React.ChangeEvent<HTMLInputElement>
-                                ) => {
-                                  const files = e.target.files;
-                                  if (!files || files.length === 0) return;
-                                  try {
-                                    // Use a local tracker to avoid stale closures inside onSuccess
-                                    let selectedIds = [
-                                      ...(values.user_file_ids || []),
-                                    ];
-                                    const optimistic = await beginUpload(
-                                      Array.from(files),
-                                      null,
-                                      setPopup,
-                                      (result) => {
-                                        const uploadedFiles =
-                                          result.user_files || [];
-                                        if (uploadedFiles.length === 0) return;
-                                        const tempToFinal = new Map(
-                                          uploadedFiles
-                                            .filter((f) => f.temp_id)
-                                            .map((f) => [
-                                              f.temp_id as string,
-                                              f.id,
-                                            ])
-                                        );
-                                        const replaced = (
-                                          selectedIds || []
-                                        ).map(
-                                          (id: string) =>
-                                            tempToFinal.get(id) ?? id
-                                        );
-                                        const deduped = Array.from(
-                                          new Set(replaced)
-                                        );
-                                        setFieldValue("user_file_ids", deduped);
-                                        selectedIds = deduped;
-                                      },
-                                      (failedTempIds) => {
-                                        if (
-                                          !failedTempIds ||
-                                          failedTempIds.length === 0
-                                        )
-                                          return;
-                                        const filtered = (
-                                          selectedIds || []
-                                        ).filter(
-                                          (id: string) =>
-                                            !failedTempIds.includes(id)
-                                        );
-                                        setFieldValue(
-                                          "user_file_ids",
-                                          filtered
-                                        );
-                                        selectedIds = filtered;
-                                      }
-                                    );
-                                    const optimisticIds = optimistic.map(
-                                      (f) => f.id
-                                    );
-                                    const merged = Array.from(
-                                      new Set([
-                                        ...(selectedIds || []),
-                                        ...optimisticIds,
-                                      ])
-                                    );
-                                    setFieldValue("user_file_ids", merged);
-                                    selectedIds = merged;
-                                  } finally {
-                                    e.target.value = "";
-                                  }
-                                }}
-                                selectedFileIds={values.user_file_ids}
-                              />
-                            </div>
-                          )}
-
-                        {values.knowledge_source === "team_knowledge" &&
-                          connectorsExist && (
-                            <>
-                              {canShowKnowledgeSource && (
-                                <div className="mt-4">
-                                  <div>
-                                    <SubLabel>
-                                      <>
-                                        Select which{" "}
-                                        {!user ||
-                                        user.role !== UserRole.BASIC ? (
-                                          <Link
-                                            href="/admin/documents/sets"
-                                            className="font-semibold underline hover:underline text-text"
-                                            target="_blank"
-                                          >
-                                            Document Sets
-                                          </Link>
-                                        ) : (
-                                          "Team Document Sets"
-                                        )}{" "}
-                                        this Agent should use to inform its
-                                        responses. If none are specified, the
-                                        Agent will reference all available
-                                        documents.
-                                      </>
-                                    </SubLabel>
-                                  </div>
-                                </div>
-                              )}
-                              {documentSets.length > 0 ? (
-                                <FieldArray
-                                  name="document_set_ids"
-                                  render={(arrayHelpers: ArrayHelpers) => (
-                                    <div>
-                                      <div className="mb-3 mt-2 flex gap-2 flex-wrap text-sm">
-                                        {documentSets.map((documentSet) => (
-                                          <DocumentSetSelectable
-                                            key={documentSet.id}
-                                            documentSet={documentSet}
-                                            isSelected={values.document_set_ids.includes(
-                                              documentSet.id
-                                            )}
-                                            onSelect={() => {
-                                              const index =
-                                                values.document_set_ids.indexOf(
-                                                  documentSet.id
-                                                );
-                                              if (index !== -1) {
-                                                arrayHelpers.remove(index);
-                                              } else {
-                                                arrayHelpers.push(
-                                                  documentSet.id
-                                                );
-                                              }
-                                            }}
-                                          />
-                                        ))}
-                                      </div>
-                                    </div>
-                                  )}
+                                      const merged = Array.from(
+                                        new Set([
+                                          ...(selectedIds || []),
+                                          ...optimisticIds,
+                                        ])
+                                      );
+                                      setFieldValue("user_file_ids", merged);
+                                      selectedIds = merged;
+                                    } finally {
+                                      e.target.value = "";
+                                    }
+                                  }}
+                                  selectedFileIds={values.user_file_ids}
                                 />
-                              ) : (
-                                <p className="text-sm">
-                                  <Link
-                                    href="/admin/documents/sets/new"
-                                    className="text-primary hover:underline"
-                                  >
-                                    + Create Document Set
-                                  </Link>
-                                </p>
-                              )}
-                            </>
-                          )}
-                      </div>
-                    )}
+                              </div>
+                            )}
+
+                          {values.knowledge_source === "team_knowledge" &&
+                            connectorsExist && (
+                              <>
+                                {canShowKnowledgeSource && (
+                                  <div className="mt-4">
+                                    <div>
+                                      <SubLabel>
+                                        <>
+                                          Select which{" "}
+                                          {!user ||
+                                            user.role !== UserRole.BASIC ? (
+                                            <Link
+                                              href="/admin/documents/sets"
+                                              className="font-semibold underline hover:underline text-text"
+                                              target="_blank"
+                                            >
+                                              Document Sets
+                                            </Link>
+                                          ) : (
+                                            "Team Document Sets"
+                                          )}{" "}
+                                          this Agent should use to inform its
+                                          responses. If none are specified, the
+                                          Agent will reference all available
+                                          documents.
+                                        </>
+                                      </SubLabel>
+                                    </div>
+                                  </div>
+                                )}
+                                {documentSets.length > 0 ? (
+                                  <FieldArray
+                                    name="document_set_ids"
+                                    render={(arrayHelpers: ArrayHelpers) => (
+                                      <div>
+                                        <div className="mb-3 mt-2 flex gap-2 flex-wrap text-sm">
+                                          {documentSets.map((documentSet) => (
+                                            <DocumentSetSelectable
+                                              key={documentSet.id}
+                                              documentSet={documentSet}
+                                              isSelected={values.document_set_ids.includes(
+                                                documentSet.id
+                                              )}
+                                              onSelect={() => {
+                                                const index =
+                                                  values.document_set_ids.indexOf(
+                                                    documentSet.id
+                                                  );
+                                                if (index !== -1) {
+                                                  arrayHelpers.remove(index);
+                                                } else {
+                                                  arrayHelpers.push(
+                                                    documentSet.id
+                                                  );
+                                                }
+                                              }}
+                                            />
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  />
+                                ) : (
+                                  <p className="text-sm">
+                                    <Link
+                                      href="/admin/documents/sets/new"
+                                      className="text-primary hover:underline"
+                                    >
+                                      + Create Document Set
+                                    </Link>
+                                  </p>
+                                )}
+                              </>
+                            )}
+                        </div>
+                      )}
 
                     <Separator />
                     <div className="py-2">
@@ -1206,18 +1201,18 @@ export default function AssistantEditor({
                     llmProviders={llmProviders}
                     currentLlm={
                       values.llm_model_version_override &&
-                      values.llm_model_provider_override
+                        values.llm_model_provider_override
                         ? (() => {
-                            const provider = llmProviders.find(
-                              (p) =>
-                                p.name === values.llm_model_provider_override
-                            );
-                            return structureValue(
-                              values.llm_model_provider_override,
-                              provider?.provider || "",
-                              values.llm_model_version_override
-                            );
-                          })()
+                          const provider = llmProviders.find(
+                            (p) =>
+                              p.name === values.llm_model_provider_override
+                          );
+                          return structureValue(
+                            values.llm_model_provider_override,
+                            provider?.provider || "",
+                            values.llm_model_version_override
+                          );
+                        })()
                         : null
                     }
                     requiresImageGeneration={
@@ -1252,7 +1247,7 @@ export default function AssistantEditor({
 
                 {showAdvancedOptions && (
                   <>
-                    <div className="max-w-4xl w-full">
+                    <div className="w-full">
                       {user?.role === UserRole.ADMIN && (
                         <BooleanFormField
                           onChange={(checked) => {
@@ -1469,7 +1464,7 @@ export default function AssistantEditor({
                       </div>
                     </div>
 
-                    <div className=" w-full max-w-4xl">
+                    <div className="w-full">
                       <Separator />
                       <div className="flex gap-x-2 items-center mt-4 ">
                         <div className="block font-medium text-sm">Labels</div>
@@ -1524,8 +1519,8 @@ export default function AssistantEditor({
                                       values.label_ids.includes(label.id);
                                     const newLabelIds = isSelected
                                       ? values.label_ids.filter(
-                                          (id: number) => id !== label.id
-                                        )
+                                        (id: number) => id !== label.id
+                                      )
                                       : [...values.label_ids, label.id];
                                     setFieldValue("label_ids", newLabelIds);
                                   }
