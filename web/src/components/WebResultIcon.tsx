@@ -22,7 +22,12 @@ export function WebResultIcon({
   return (
     <>
       {hostname.includes("onyx.app") ? (
-        <OnyxIcon size={size} className="dark:text-[#fff] text-[#000]" />
+        <img
+          src="/cellilox-logo.png"
+          alt="Onyx Logo"
+          style={{ height: size, width: size }}
+          className="object-contain"
+        />
       ) : !error ? (
         <img
           className="my-0 rounded-full py-0"

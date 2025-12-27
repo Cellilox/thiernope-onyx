@@ -47,6 +47,15 @@ const Page = async (props: {
     return redirect("/chat");
   }
 
+  // RESTRICT ACCESS: Redirect to Daxno if not admin and not logged in
+  const adminKey = process.env.NEXT_PUBLIC_ADMIN_ACCESS_KEY || "true";
+  const isValidAdmin = searchParams?.admin === adminKey;
+  const daxnoUrl = process.env.NEXT_PUBLIC_DAXNO_URL || "http://localhost:3001";
+
+  if (!currentUser && !isValidAdmin) {
+    return redirect(daxnoUrl);
+  }
+
   // if user is already logged in, take them to the main app page
   if (currentUser && currentUser.is_active && !currentUser.is_anonymous_user) {
     if (!authTypeMetadata?.requiresVerification || currentUser.is_verified) {

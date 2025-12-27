@@ -12,8 +12,8 @@ const variantClasses = (transient?: boolean) =>
       primary: {
         enabled: [
           "bg-theme-primary-05",
-          "hover:bg-theme-primary-04",
-          transient && "bg-theme-primary-04",
+          "hover:bg-theme-primary-06",
+          transient && "bg-theme-primary-06",
           "active:bg-theme-primary-06",
         ],
         disabled: ["bg-background-neutral-04"],
@@ -121,15 +121,15 @@ const textClasses = (transient?: boolean) =>
   ({
     main: {
       primary: {
-        enabled: ["text-text-inverted-05"],
+        enabled: ["text-white"],
         disabled: ["text-text-inverted-04"],
       },
       secondary: {
         enabled: [
           "text-text-03",
-          "group-hover/Button:text-text-04",
-          transient && "text-text-04",
-          "group-active/Button:text-text-05",
+          "group-hover/Button:text-daxno",
+          transient && "text-daxno",
+          "group-active/Button:text-daxno",
         ],
         disabled: ["text-text-01"],
       },
@@ -199,28 +199,28 @@ const iconClasses = (transient?: boolean) =>
       },
       secondary: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },
       tertiary: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },
       internal: {
         enabled: [
-          "stroke-text-03",
-          "group-hover/Button:stroke-text-04",
-          transient && "stroke-text-04",
-          "group-active/Button:stroke-text-05",
+          "stroke-daxno-muted",
+          "group-hover/Button:stroke-daxno",
+          transient && "stroke-daxno",
+          "group-active/Button:stroke-daxno",
         ],
         disabled: ["stroke-text-01"],
       },
@@ -347,7 +347,7 @@ function ButtonInner(
     <button
       ref={ref}
       className={cn(
-        "p-2 h-fit rounded-12 group/Button w-fit flex flex-row items-center justify-center gap-1.5",
+        "px-4 py-2 h-fit rounded-md shadow transition-colors group/Button w-fit flex flex-row items-center justify-center gap-1.5",
         buttonClass,
         className
       )}

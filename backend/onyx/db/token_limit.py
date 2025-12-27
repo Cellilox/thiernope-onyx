@@ -1,3 +1,4 @@
+import uuid
 from collections.abc import Sequence
 
 from sqlalchemy import select
@@ -44,6 +45,27 @@ def fetch_all_global_token_rate_limits(
 
     token_rate_limits = db_session.scalars(query).all()
     return token_rate_limits
+
+
+def fetch_token_rate_limits_for_user_groups(
+    db_session: Session,
+    user_id: uuid.UUID,
+    enabled_only: bool = True,
+) -> Sequence[TokenRateLimit]:
+    from onyx.db.models import User__UserGroup
+    
+    # Select Limit joined with Link table joined with User Membership
+    query = (
+        select(TokenRateLimit)
+        .join(TokenRateLimit__UserGroup, TokenRateLimit.id == TokenRateLimit__UserGroup.rate_limit_id)
+        .join(User__UserGroup, TokenRateLimit__UserGroup.user_group_id == User__UserGroup.user_group_id)
+        .where(User__UserGroup.user_id == user_id)
+    )
+
+    if enabled_only:
+        query = query.where(TokenRateLimit.enabled.is_(True))
+        
+    return db_session.scalars(query).all()
 
 
 def insert_user_token_rate_limit(

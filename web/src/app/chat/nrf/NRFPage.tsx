@@ -215,9 +215,8 @@ export default function NRFPage({
           >
             <div className="pointer-events-auto absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-[90%] lg:max-w-3xl">
               <h1
-                className={`pl-2 text-xl text-left w-full mb-4 ${
-                  theme === "light" ? "text-text-800" : "text-white"
-                }`}
+                className={`pl-2 text-xl text-left w-full mb-4 ${theme === "light" ? "text-text-800" : "text-white"
+                  }`}
               >
                 {isNight
                   ? "End your day with Onyx"
@@ -317,13 +316,13 @@ export default function NRFPage({
         </DialogContent>
       </Dialog>
       {!user &&
-      authTypeMetadata.authType !== AuthType.DISABLED &&
-      showLoginModal ? (
+        authTypeMetadata.authType !== AuthType.DISABLED &&
+        showLoginModal ? (
         <Modal open onOpenChange={() => setShowLoginModal(false)}>
           <Modal.Content small>
             <Modal.Header
               icon={SvgUser}
-              title="Welcome to Onyx"
+              title="Welcome to Cellilox Agent"
               onClose={() => setShowLoginModal(false)}
             />
             <Modal.Body>

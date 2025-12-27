@@ -21,6 +21,7 @@ from onyx.configs.app_configs import AUTH_TYPE
 from onyx.configs.app_configs import DISABLE_AUTH
 from onyx.configs.app_configs import USER_FILE_INDEXING_LIMIT
 from onyx.configs.constants import AuthType
+from onyx.configs.constants import DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN
 from onyx.configs.constants import DocumentSource
 from onyx.db.connector import fetch_connector_by_id
 from onyx.db.credentials import fetch_credential_by_id
@@ -56,7 +57,20 @@ def _add_user_filters(
     stmt: Select[tuple[*R]], user: User | None, get_editable: bool = True
 ) -> Select[tuple[*R]]:
     # If user is None and auth is disabled, assume the user is an admin
-    if (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN):
+    # However, if this is a shadow-admin (API Key user), we should treat them
+    # like a regular user so they only see their own connectors/docs
+    is_shadow_admin = (
+        user
+        and user.email
+        and user.email.endswith(DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN)
+    )
+
+    if is_shadow_admin:
+        return stmt.where(ConnectorCredentialPair.creator_id == user.id)
+
+    if (
+        (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN)
+    ):
         return stmt
 
     stmt = stmt.distinct()

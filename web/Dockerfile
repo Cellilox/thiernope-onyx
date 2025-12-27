@@ -2,10 +2,10 @@ FROM node:20-alpine AS base
 
 LABEL com.onyx.maintainer="founders@onyx.app"
 LABEL com.onyx.description="This image is the web/frontend container of Onyx which \
-contains code for both the Community and Enterprise editions of Onyx. If you do not \
-have a contract or agreement with DanswerAI, you are not permitted to use the Enterprise \
-Edition features outside of personal development or testing purposes. Please reach out to \
-founders@onyx.app for more information. Please visit https://github.com/onyx-dot-app/onyx"
+    contains code for both the Community and Enterprise editions of Onyx. If you do not \
+    have a contract or agreement with DanswerAI, you are not permitted to use the Enterprise \
+    Edition features outside of personal development or testing purposes. Please reach out to \
+    founders@onyx.app for more information. Please visit https://github.com/onyx-dot-app/onyx"
 
 # Step 1. Install dependencies + rebuild the source code only when needed
 FROM base AS builder
@@ -49,6 +49,15 @@ ENV NEXT_PUBLIC_THEME=${NEXT_PUBLIC_THEME}
 
 ARG NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED
 ENV NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED=${NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED}
+
+ARG NEXT_PUBLIC_SUPER_ADMIN_EMAIL
+ENV NEXT_PUBLIC_SUPER_ADMIN_EMAIL=${NEXT_PUBLIC_SUPER_ADMIN_EMAIL}
+
+ARG NEXT_PUBLIC_DAXNO_URL
+ENV NEXT_PUBLIC_DAXNO_URL=${NEXT_PUBLIC_DAXNO_URL}
+
+ARG NEXT_PUBLIC_ADMIN_ACCESS_KEY
+ENV NEXT_PUBLIC_ADMIN_ACCESS_KEY=${NEXT_PUBLIC_ADMIN_ACCESS_KEY}
 
 ARG NEXT_PUBLIC_DISABLE_LOGOUT
 ENV NEXT_PUBLIC_DISABLE_LOGOUT=${NEXT_PUBLIC_DISABLE_LOGOUT}
@@ -129,6 +138,9 @@ ENV NEXT_PUBLIC_THEME=${NEXT_PUBLIC_THEME}
 
 ARG NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED
 ENV NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED=${NEXT_PUBLIC_DO_NOT_USE_TOGGLE_OFF_DANSWER_POWERED}
+
+ARG NEXT_PUBLIC_SUPER_ADMIN_EMAIL
+ENV NEXT_PUBLIC_SUPER_ADMIN_EMAIL=${NEXT_PUBLIC_SUPER_ADMIN_EMAIL}
 
 ARG NEXT_PUBLIC_DEFAULT_SIDEBAR_OPEN
 ENV NEXT_PUBLIC_DEFAULT_SIDEBAR_OPEN=${NEXT_PUBLIC_DEFAULT_SIDEBAR_OPEN}

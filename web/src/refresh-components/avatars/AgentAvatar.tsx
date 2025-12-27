@@ -29,7 +29,16 @@ export default function AgentAvatar({ agent, ...props }: AgentAvatarProps) {
         />
       </div>
     ) : (
-      <OnyxIcon size={props.size} className="" />
+      <div
+        className="aspect-square rounded-full overflow-hidden flex items-center justify-center p-1 bg-white"
+        style={{ height: props.size, width: props.size }}
+      >
+        <img
+          src="/cellilox-logo.png"
+          alt="Agent Logo"
+          className="h-full w-full object-contain"
+        />
+      </div>
     );
   }
 

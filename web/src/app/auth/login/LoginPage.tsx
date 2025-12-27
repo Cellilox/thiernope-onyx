@@ -78,10 +78,12 @@ export default function LoginPage({
           Don&apos;t have an account?{" "}
           <span
             onClick={() => {
+              const adminKey = process.env.NEXT_PUBLIC_ADMIN_ACCESS_KEY || "true";
+              const targetUrl = `/auth/signup?admin=${adminKey}`;
               if (typeof window !== "undefined" && window.top) {
-                window.top.location.href = "/auth/signup";
+                window.top.location.href = targetUrl;
               } else {
-                window.location.href = "/auth/signup";
+                window.location.href = targetUrl;
               }
             }}
             className="text-link font-medium cursor-pointer"

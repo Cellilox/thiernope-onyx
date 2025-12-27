@@ -32,7 +32,7 @@ interface IconLabelProps {
 function IconLabel({ icon: Icon, children }: IconLabelProps) {
   return (
     <div className="flex flex-row items-center gap-1">
-      <Icon className="stroke-text-03 w-3 h-3" />
+      <Icon className="stroke-daxno-muted w-3 h-3" />
       <Text text03 secondaryBody>
         {children}
       </Text>
@@ -127,9 +127,8 @@ export default function AgentCard({ agent }: AgentCardProps) {
             <IconLabel icon={SvgUser}>{agent.owner?.email || "Onyx"}</IconLabel>
             <IconLabel icon={SvgActions}>
               {agent.tools.length > 0
-                ? `${agent.tools.length} Action${
-                    agent.tools.length > 1 ? "s" : ""
-                  }`
+                ? `${agent.tools.length} Action${agent.tools.length > 1 ? "s" : ""
+                }`
                 : "No Actions"}
             </IconLabel>
           </div>

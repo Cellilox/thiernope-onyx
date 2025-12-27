@@ -12,6 +12,14 @@ services:
   api_server:
     ports:
       - "8080:8080"
+    volumes:
+      - ../../backend:/app
+    environment:
+      - WEB_DOMAIN=http://localhost:3000
+ 
+  background:
+    volumes:
+      - ../../backend:/app
 
   mcp_server:
     ports:
@@ -19,7 +27,7 @@ services:
 
   relational_db:
     ports:
-      - "5432:5432"
+      - "5435:5432"
 
   index:
     ports:
@@ -38,4 +46,4 @@ services:
 
   code-interpreter:
     ports:
-      - "8000:8000"
+      - "8095:8000"

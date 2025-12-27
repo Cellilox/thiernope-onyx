@@ -27,6 +27,8 @@ from onyx.background.celery.versioned_apps.client import app as client_app
 from onyx.configs.app_configs import DISABLE_AUTH
 from onyx.configs.app_configs import ENABLED_CONNECTOR_TYPES
 from onyx.configs.app_configs import MOCK_CONNECTOR_FILE_PATH
+from onyx.configs.app_configs import MOCK_CONNECTOR_FILE_PATH
+from onyx.configs.constants import DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN
 from onyx.configs.constants import DocumentSource
 from onyx.configs.constants import FileOrigin
 from onyx.configs.constants import MilestoneRecordType
@@ -547,7 +549,7 @@ def upload_files_api(
 
 @router.get("/admin/connector")
 def get_connectors_by_credential(
-    _: User = Depends(current_curator_or_admin_user),
+    user: User = Depends(current_curator_or_admin_user),
     db_session: Session = Depends(get_session),
     credential: int | None = None,
 ) -> list[ConnectorSnapshot]:
@@ -572,7 +574,22 @@ def get_connectors_by_credential(
             if not found:
                 continue
 
-        filtered_connectors.append(ConnectorSnapshot.from_connector_db_model(connector))
+        # If it's a shadow user, only show connectors that they created
+        owned_credential_ids = []
+        if user and user.email and user.email.endswith(DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN):
+            found_owned = False
+            for cc_pair in connector.credentials:
+                if cc_pair.creator_id == user.id:
+                    found_owned = True
+                    owned_credential_ids.append(cc_pair.id)
+            if not found_owned:
+                continue
+
+        filtered_connectors.append(
+            ConnectorSnapshot.from_connector_db_model(
+                connector, credential_ids=owned_credential_ids if owned_credential_ids else None
+            )
+        )
 
     return filtered_connectors
 
@@ -760,6 +777,12 @@ def get_connector_indexing_status(
         # Get most recent finished index attempts
         (get_latest_index_attempts_parallel, (request.secondary_index, True, True)),
     ]
+
+    is_shadow_admin = (
+        user
+        and user.email
+        and user.email.endswith(DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN)
+    )
 
     if (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN):
         # For Admin users, we already got all the cc pair in editable_cc_pairs

@@ -51,7 +51,14 @@ export function SearchResultIcon({ url }: { url: string }) {
     return <SourceIcon sourceType={ValidSources.Web} iconSize={18} />;
   }
   if (url.includes("onyx.app")) {
-    return <OnyxIcon size={18} className="dark:text-[#fff] text-[#000]" />;
+    return (
+      <img
+        src="/cellilox-logo.png"
+        alt="Onyx Logo"
+        style={{ height: 18, width: 18 }}
+        className="object-contain"
+      />
+    );
   }
 
   return (

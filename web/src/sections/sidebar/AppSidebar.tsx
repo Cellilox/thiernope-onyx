@@ -403,7 +403,6 @@ function AppSidebarInner({ folded, onFoldClick }: AppSidebarInnerProps) {
           href="/chat/agents"
           folded={folded}
           active={activeSidebarTab === "more-agents"}
-          lowlight={!folded}
         >
           {visibleAgents.length === 0 ? "Explore Agents" : "More Agents"}
         </SidebarTab>
@@ -418,7 +417,6 @@ function AppSidebarInner({ folded, onFoldClick }: AppSidebarInnerProps) {
         onClick={() => createProjectModal.toggle(true)}
         active={createProjectModal.isOpen}
         folded={folded}
-        lowlight={!folded}
       >
         New Project
       </SidebarTab>

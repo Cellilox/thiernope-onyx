@@ -27,17 +27,25 @@ import { useCreateModal } from "@/refresh-components/contexts/ModalContext";
 import UserSettings from "@/sections/sidebar/Settings/UserSettings";
 
 function getDisplayName(email?: string, personalName?: string): string {
-  // Prioritize custom personal name if set
+  let name = "";
   if (personalName && personalName.trim()) {
-    return personalName.trim();
+    name = personalName.trim();
+  } else if (email) {
+    const atIndex = email.indexOf("@");
+    if (atIndex > 0) {
+      name = email.substring(0, atIndex);
+    } else {
+      name = ANONYMOUS_USER_NAME;
+    }
+  } else {
+    name = ANONYMOUS_USER_NAME;
   }
 
-  // Fallback to email-derived username
-  if (!email) return ANONYMOUS_USER_NAME;
-  const atIndex = email.indexOf("@");
-  if (atIndex <= 0) return ANONYMOUS_USER_NAME;
-
-  return email.substring(0, atIndex);
+  // Truncate if too long
+  if (name.length > 20) {
+    return name.substring(0, 17) + "...";
+  }
+  return name;
 }
 
 interface SettingsPopoverProps {
@@ -68,9 +76,8 @@ function SettingsPopover({
         return;
       }
 
-      const currentUrl = `${pathname}${
-        searchParams?.toString() ? `?${searchParams.toString()}` : ""
-      }`;
+      const currentUrl = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ""
+        }`;
 
       const encodedRedirect = encodeURIComponent(currentUrl);
 
@@ -101,11 +108,10 @@ function SettingsPopover({
             icon={SvgBell}
             onClick={onNotificationsClick}
           >
-            {`Notifications ${
-              notifications && notifications.length > 0
-                ? `(${notifications.length})`
-                : ""
-            }`}
+            {`Notifications ${notifications && notifications.length > 0
+              ? `(${notifications.length})`
+              : ""
+              }`}
           </LineItem>,
           null,
           showLogout && (

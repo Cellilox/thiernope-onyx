@@ -20,6 +20,8 @@ from onyx.configs.app_configs import CURATORS_CANNOT_VIEW_OR_EDIT_NON_OWNED_ASSI
 from onyx.configs.app_configs import DISABLE_AUTH
 from onyx.configs.chat_configs import CONTEXT_CHUNKS_ABOVE
 from onyx.configs.chat_configs import CONTEXT_CHUNKS_BELOW
+from onyx.configs.chat_configs import CONTEXT_CHUNKS_BELOW
+from onyx.configs.constants import DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN
 from onyx.configs.constants import DEFAULT_PERSONA_ID
 from onyx.configs.constants import NotificationType
 from onyx.context.search.enums import RecencyBiasSetting
@@ -63,6 +65,17 @@ def _add_user_filters(
     stmt: Select[tuple[Persona]], user: User | None, get_editable: bool = True
 ) -> Select[tuple[Persona]]:
     # If user is None and auth is disabled, assume the user is an admin
+    is_shadow_admin = (
+        user
+        and user.email
+        and user.email.endswith(DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN)
+    )
+
+    if is_shadow_admin:
+        return stmt.where(
+            or_(Persona.user_id == user.id, Persona.id == DEFAULT_PERSONA_ID)
+        )
+
     if (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN):
         return stmt
 

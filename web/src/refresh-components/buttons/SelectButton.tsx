@@ -33,22 +33,22 @@ const iconClassNames = (engaged?: boolean, transient?: boolean) =>
   ({
     main: {
       enabled: [
-        "stroke-text-03",
-        "group-hover/SelectButton:stroke-text-04",
-        transient && "stroke-text-04",
-        "group-active/SelectButton:stroke-text-05",
+        "stroke-daxno-muted",
+        "group-hover/SelectButton:stroke-daxno",
+        transient && "stroke-daxno",
+        "group-active/SelectButton:stroke-daxno",
       ],
       disabled: ["stroke-text-02"],
     },
     action: {
       enabled: [
-        engaged ? "stroke-action-link-05" : "stroke-text-03",
+        engaged ? "stroke-action-link-05" : "stroke-daxno-muted",
         engaged
           ? "group-hover/SelectButton:stroke-action-link-05"
-          : "group-hover/SelectButton:stroke-text-04",
+          : "group-hover/SelectButton:stroke-daxno",
         engaged
           ? "group-active/SelectButton:stroke-action-link-06"
-          : "group-active/SelectButton:stroke-text-05",
+          : "group-active/SelectButton:stroke-daxno",
       ],
       disabled: ["stroke-action-link-03"],
     },

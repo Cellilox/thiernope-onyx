@@ -23,7 +23,6 @@ export default function WelcomeMessage({
     const greeting = useMemo(getRandomGreeting, []);
     content = (
       <div data-testid="onyx-logo" className="flex flex-row items-center gap-4">
-        <Logo size="default" />
         <Text headingH2>{greeting}</Text>
       </div>
     );

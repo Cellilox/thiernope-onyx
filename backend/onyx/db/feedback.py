@@ -14,6 +14,8 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.orm import Session
 
 from onyx.configs.app_configs import DISABLE_AUTH
+from onyx.configs.app_configs import DISABLE_AUTH
+from onyx.configs.constants import DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN
 from onyx.configs.constants import MessageType
 from onyx.configs.constants import SearchFeedbackType
 from onyx.db.chat import get_chat_message
@@ -47,7 +49,34 @@ def _add_user_filters(
     stmt: Select, user: User | None, get_editable: bool = True
 ) -> Select:
     # If user is None and auth is disabled, assume the user is an admin
-    if (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN):
+    # However, if this is a shadow-admin (API Key user), we should treat them
+    # like a regular user so they only see their own connectors/docs
+    is_shadow_admin = (
+        user
+        and user.email
+        and user.email.endswith(DANSWER_API_KEY_DUMMY_EMAIL_DOMAIN)
+    )
+
+    if is_shadow_admin:
+        # Strict isolation: Shadow admins see ONLY documents from CC pairs they created
+        # We need to join CC Pair to filter by creator_id
+        CCPair = aliased(ConnectorCredentialPair)
+        DocByCC = aliased(DocumentByConnectorCredentialPair)
+        stmt = (
+            stmt.outerjoin(DocByCC, DocByCC.id == DbDocument.id)
+            .outerjoin(
+                CCPair,
+                and_(
+                    CCPair.connector_id == DocByCC.connector_id,
+                    CCPair.credential_id == DocByCC.credential_id,
+                ),
+            )
+        )
+        return stmt.where(CCPair.creator_id == user.id)
+
+    if (
+        (user is None and DISABLE_AUTH) or (user and user.role == UserRole.ADMIN)
+    ):
         return stmt
 
     stmt = stmt.distinct()

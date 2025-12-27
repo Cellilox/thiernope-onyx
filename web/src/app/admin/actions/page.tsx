@@ -6,10 +6,8 @@ import Title from "@/components/ui/title";
 import { fetchSS } from "@/lib/utilsSS";
 import { ErrorCallout } from "@/components/ErrorCallout";
 import { AdminPageTitle } from "@/components/admin/Title";
-import CreateButton from "@/refresh-components/buttons/CreateButton";
-import { FiHelpCircle } from "react-icons/fi";
-import SimpleTooltip from "@/refresh-components/SimpleTooltip";
 import SvgActions from "@/icons/actions";
+import RestrictedCreateButtons from "./RestrictedCreateButtons";
 
 export default async function Page() {
   // Fetch both tools and MCP servers
@@ -61,20 +59,7 @@ export default async function Page() {
       </Text>
 
       <div>
-        <Separator />
-
-        <Title>Create Actions</Title>
-        <div className="flex gap-4 mt-2 items-center">
-          <CreateButton href="/admin/actions/new">
-            From OpenAPI schema
-          </CreateButton>
-          <CreateButton href="/admin/actions/edit-mcp">
-            From MCP server
-          </CreateButton>
-          <SimpleTooltip tooltip="MCP (Model Context Protocol) servers provide structured ways for AI models to interact with external systems and data sources. They offer a standardized interface for tools and resources.">
-            <FiHelpCircle className="h-4 w-4 cursor-help" />
-          </SimpleTooltip>
-        </div>
+        <RestrictedCreateButtons />
 
         <Separator />
 

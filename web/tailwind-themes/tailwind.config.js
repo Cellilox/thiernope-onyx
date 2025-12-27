@@ -51,8 +51,8 @@ module.exports = {
         "very-short": { raw: "(max-height: 600px)" },
       },
       fontFamily: {
-        sans: ["Hanken Grotesk", "var(--font-inter)", "sans-serif"],
-        hanken: ["Hanken Grotesk", "sans-serif"],
+        sans: ["var(--font-geist-sans)", "Arial", "Helvetica", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
       },
       width: {
         "message-xs": "450px",
@@ -206,6 +206,10 @@ module.exports = {
         foreground: "var(--background-tint-inverted-01)",
         border: "var(--border-01)",
         text: "var(--text-04)",
+        daxno: "#2B4690",
+        "daxno-muted": "#7E92CC",
+        "daxno-cream": "#fefce8",
+        "daxno-blue-light": "#eff6ff",
       },
       borderRadius: {
         "02": "var(--border-radius-02)",

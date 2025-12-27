@@ -75,7 +75,8 @@ const document_management_items = () => [
 
 const custom_assistants_items = (
   isCurator: boolean,
-  enableEnterprise: boolean
+  enableEnterprise: boolean,
+  isSuperAdmin: boolean
 ) => {
   const items = [
     {
@@ -86,18 +87,18 @@ const custom_assistants_items = (
   ];
 
   if (!isCurator) {
-    items.push(
-      {
+    if (isSuperAdmin) {
+      items.push({
         name: "Slack Bots",
         icon: SlackIconSkeleton,
         link: "/admin/bots",
-      },
-      {
-        name: "Actions",
-        icon: SvgActions,
-        link: "/admin/actions",
-      }
-    );
+      });
+    }
+    items.push({
+      name: "Actions",
+      icon: SvgActions,
+      link: "/admin/actions",
+    });
   } else {
     items.push({
       name: "Actions",
@@ -123,22 +124,26 @@ const collections = (
   enableEnterprise: boolean,
   settings: CombinedSettings | null,
   kgExposed: boolean,
-  customAnalyticsEnabled: boolean
-) => [
-  {
-    name: "Connectors",
-    items: connectors_items(),
-  },
-  {
-    name: "Document Management",
-    items: document_management_items(),
-  },
-  {
-    name: "Custom Assistants",
-    items: custom_assistants_items(isCurator, enableEnterprise),
-  },
-  ...(isCurator
-    ? [
+  customAnalyticsEnabled: boolean,
+  userEmail: string | undefined | null
+) => {
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = userEmail === superAdminEmail;
+  return [
+    {
+      name: "Connectors",
+      items: connectors_items(),
+    },
+    {
+      name: "Document Management",
+      items: document_management_items(),
+    },
+    {
+      name: "Custom Assistants",
+      items: custom_assistants_items(isCurator, enableEnterprise, isSuperAdmin),
+    },
+    ...(isCurator
+      ? [
         {
           name: "User Management",
           items: [
@@ -150,9 +155,9 @@ const collections = (
           ],
         },
       ]
-    : []),
-  ...(!isCurator
-    ? [
+      : []),
+    ...(!isCurator && isSuperAdmin
+      ? [
         {
           name: "Configuration",
           items: [
@@ -173,13 +178,13 @@ const collections = (
             },
             ...(!enableCloud
               ? [
-                  {
-                    error: settings?.settings.needs_reindexing,
-                    name: "Search Settings",
-                    icon: SvgSearch,
-                    link: "/admin/configuration/search",
-                  },
-                ]
+                {
+                  error: settings?.settings.needs_reindexing,
+                  name: "Search Settings",
+                  icon: SvgSearch,
+                  link: "/admin/configuration/search",
+                },
+              ]
               : []),
             {
               name: "Document Processing",
@@ -188,12 +193,12 @@ const collections = (
             },
             ...(kgExposed
               ? [
-                  {
-                    name: "Knowledge Graph",
-                    icon: BrainIcon,
-                    link: "/admin/kg",
-                  },
-                ]
+                {
+                  name: "Knowledge Graph",
+                  icon: BrainIcon,
+                  link: "/admin/kg",
+                },
+              ]
               : []),
           ],
         },
@@ -207,12 +212,12 @@ const collections = (
             },
             ...(enableEnterprise
               ? [
-                  {
-                    name: "Groups",
-                    icon: SvgUsers,
-                    link: "/admin/groups",
-                  },
-                ]
+                {
+                  name: "Groups",
+                  icon: SvgUsers,
+                  link: "/admin/groups",
+                },
+              ]
               : []),
             {
               name: "API Keys",
@@ -228,35 +233,35 @@ const collections = (
         },
         ...(enableEnterprise
           ? [
-              {
-                name: "Performance",
-                items: [
-                  {
-                    name: "Usage Statistics",
-                    icon: SvgActivity,
-                    link: "/admin/performance/usage",
-                  },
-                  ...(settings?.settings.query_history_type !== "disabled"
-                    ? [
-                        {
-                          name: "Query History",
-                          icon: SvgServer,
-                          link: "/admin/performance/query-history",
-                        },
-                      ]
-                    : []),
-                  ...(!enableCloud && customAnalyticsEnabled
-                    ? [
-                        {
-                          name: "Custom Analytics",
-                          icon: SvgBarChart,
-                          link: "/admin/performance/custom-analytics",
-                        },
-                      ]
-                    : []),
-                ],
-              },
-            ]
+            {
+              name: "Performance",
+              items: [
+                {
+                  name: "Usage Statistics",
+                  icon: SvgActivity,
+                  link: "/admin/performance/usage",
+                },
+                ...(settings?.settings.query_history_type !== "disabled"
+                  ? [
+                    {
+                      name: "Query History",
+                      icon: SvgServer,
+                      link: "/admin/performance/query-history",
+                    },
+                  ]
+                  : []),
+                ...(!enableCloud && customAnalyticsEnabled
+                  ? [
+                    {
+                      name: "Custom Analytics",
+                      icon: SvgBarChart,
+                      link: "/admin/performance/custom-analytics",
+                    },
+                  ]
+                  : []),
+              ],
+            },
+          ]
           : []),
         {
           name: "Settings",
@@ -268,27 +273,28 @@ const collections = (
             },
             ...(enableEnterprise
               ? [
-                  {
-                    name: "Whitelabeling",
-                    icon: PaintingIconSkeleton,
-                    link: "/admin/whitelabeling",
-                  },
-                ]
+                {
+                  name: "Whitelabeling",
+                  icon: PaintingIconSkeleton,
+                  link: "/admin/whitelabeling",
+                },
+              ]
               : []),
             ...(enableCloud
               ? [
-                  {
-                    name: "Billing",
-                    icon: MdOutlineCreditCard,
-                    link: "/admin/billing",
-                  },
-                ]
+                {
+                  name: "Billing",
+                  icon: MdOutlineCreditCard,
+                  link: "/admin/billing",
+                },
+              ]
               : []),
           ],
         },
       ]
-    : []),
-];
+      : []),
+  ];
+};
 
 interface AdminSidebarProps {
   // These props are passed down from a server component (Layout.tsx) that
@@ -321,7 +327,8 @@ export default function AdminSidebar({
     enableEnterpriseSS,
     settings,
     kgExposed,
-    customAnalyticsEnabled
+    customAnalyticsEnabled,
+    user?.email
   );
 
   return (
@@ -341,7 +348,7 @@ export default function AdminSidebar({
           <div className="flex flex-col gap-2">
             {settings.webVersion && (
               <Text text02 secondaryBody className="px-2">
-                {`Onyx version: ${settings.webVersion}`}
+                {`Cellilox version: ${settings.webVersion}`}
               </Text>
             )}
             <Settings />
