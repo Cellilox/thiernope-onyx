@@ -50,7 +50,7 @@ export default async function Page() {
   return (
     <div className="mx-auto container">
       <AdminPageTitle
-        icon={<SvgActions className="stroke-text-04 h-8 w-8" />}
+        // icon={<SvgActions className="stroke-text-04 h-8 w-8" />}
         title="Actions"
       />
 

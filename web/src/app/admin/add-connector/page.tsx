@@ -252,9 +252,9 @@ export default function Page() {
           const existingFederatedConnector =
             firstSource.federated && federatedConnectors
               ? federatedConnectors.find(
-                  (connector) =>
-                    connector.source === `federated_${firstSource.internalName}`
-                )
+                (connector) =>
+                  connector.source === `federated_${firstSource.internalName}`
+              )
               : null;
 
           const url = existingFederatedConnector
@@ -270,7 +270,7 @@ export default function Page() {
   return (
     <div className="mx-auto container">
       <AdminPageTitle
-        icon={SvgUploadCloud}
+        // icon={SvgUploadCloud}
         title="Add Connector"
         farRightElement={
           <Button href="/admin/indexing/status" primary>
@@ -286,13 +286,13 @@ export default function Page() {
         value={rawSearchTerm} // keep the input bound to immediate state
         onChange={(event) => setSearchTerm(event.target.value)}
         onKeyDown={handleKeyPress}
-        className="w-96"
+        className="w-full md:w-96"
       />
 
       {dedupedPopular.length > 0 && (
         <div className="pt-8">
           <Text headingH3>Popular</Text>
-          <div className="flex flex-wrap gap-4 p-4">
+          <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
             {dedupedPopular.map((source) => (
               <SourceTileTooltipWrapper
                 preSelect={false}
@@ -311,7 +311,7 @@ export default function Page() {
         .map(([category, sources], categoryInd) => (
           <div key={category} className="pt-8">
             <Text headingH3>{category}</Text>
-            <div className="flex flex-wrap gap-4 p-4">
+            <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
               {sources.map((source, sourceInd) => (
                 <SourceTileTooltipWrapper
                   preSelect={

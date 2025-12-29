@@ -968,7 +968,7 @@ export default function ChatPage({
                                 llmManager.hasAnyProvider === false) ||
                               (!isLoadingOnboarding &&
                                 onboardingState.currentStep !==
-                                  OnboardingStep.Complete)
+                                OnboardingStep.Complete)
                             }
                           />
                         </div>

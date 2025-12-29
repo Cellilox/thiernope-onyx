@@ -28,17 +28,16 @@ function LLMProviderUpdateModal({
   const providerName = existingLlmProvider?.name
     ? `"${existingLlmProvider.name}"`
     : llmProviderDescriptor?.display_name ||
-      llmProviderDescriptor?.name ||
-      "Custom LLM Provider";
+    llmProviderDescriptor?.name ||
+    "Custom LLM Provider";
 
   return (
     <Modal open onOpenChange={onClose}>
       <Modal.Content medium>
         <Modal.Header
           icon={SvgSettings}
-          title={`${
-            llmProviderDescriptor ? "Configure" : "Setup"
-          } ${providerName}`}
+          title={`${llmProviderDescriptor ? "Configure" : "Setup"
+            } ${providerName}`}
           onClose={onClose}
         />
         <Modal.Body className="max-h-[70vh] overflow-y-auto">
@@ -106,7 +105,8 @@ function LLMProviderDisplay({
   return (
     <div>
       {popup}
-      <div className="border p-3 bg-background-neutral-01 rounded-16 w-96 flex shadow-md">
+      <div className="border p-3 bg-background-neutral-01 rounded-16 w-full md:w-96 flex shadow-md">
+
         <div className="my-auto">
           <Text headingH3 text04>
             {providerName}{" "}
@@ -191,15 +191,15 @@ export function ConfiguredLLMProviderDisplay({
             // provider descriptor
             llmProviderDescriptor={
               defaultProviderDesciptor &&
-              (defaultProviderDesciptor.model_configurations.length === 0 ||
-                isSubset(
-                  defaultProviderDesciptor.model_configurations.map(
-                    (model_configuration) => model_configuration.name
-                  ),
-                  provider.model_configurations.map(
-                    (model_configuration) => model_configuration.name
-                  )
-                ))
+                (defaultProviderDesciptor.model_configurations.length === 0 ||
+                  isSubset(
+                    defaultProviderDesciptor.model_configurations.map(
+                      (model_configuration) => model_configuration.name
+                    ),
+                    provider.model_configurations.map(
+                      (model_configuration) => model_configuration.name
+                    )
+                  ))
                 ? defaultProviderDesciptor
                 : null
             }

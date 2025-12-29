@@ -8,6 +8,8 @@ export interface StepSidebarProps {
   buttonName: string;
   buttonIcon: React.FunctionComponent<IconProps>;
   buttonHref: string;
+  folded?: boolean;
+  onFoldClick?: () => void;
 }
 
 export default function StepSidebar({
@@ -15,14 +17,17 @@ export default function StepSidebar({
   buttonName,
   buttonIcon,
   buttonHref,
+  folded = false,
+  onFoldClick,
 }: StepSidebarProps) {
   return (
-    <SidebarWrapper>
+    <SidebarWrapper folded={folded} onFoldClick={onFoldClick}>
       <div className="px-2">
         <SidebarTab
           leftIcon={buttonIcon}
-          className="bg-background-tint-00"
+
           href={buttonHref}
+          folded={folded}
         >
           {buttonName}
         </SidebarTab>

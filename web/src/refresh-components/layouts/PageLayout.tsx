@@ -1,17 +1,20 @@
 // Wraps all pages with the default, standard CSS styles.
 
-export default function PageWrapper(
-  props: React.HtmlHTMLAttributes<HTMLDivElement>
-) {
+import { cn } from "@/lib/utils";
+
+export default function PageLayout({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
+      className="h-full w-full overflow-y-auto"
       id="page-wrapper-scroll-container"
-      className="w-full h-full flex flex-col items-center overflow-y-auto"
     >
       {/* WARNING: The id="page-wrapper-scroll-container" above is used by PageHeader.tsx
           to detect scroll position and show/hide the scroll shadow.
           DO NOT REMOVE this ID without updating PageHeader.tsx accordingly. */}
-      <div className="h-full w-[50rem]">
+      <div className={cn("h-full flex flex-col items-center mx-auto", className || "w-[50rem]")}>
         <div {...props} />
       </div>
     </div>

@@ -190,6 +190,7 @@ export function Explorer({
             }
           }}
           role="textarea"
+          className="w-full md:w-96"
         />
 
         <HorizontalFilters
@@ -197,7 +198,7 @@ export function Explorer({
           availableDocumentSets={documentSets}
           existingSources={connectors.map((connector) => connector.source)}
           availableTags={[]}
-          toggleFilters={() => {}}
+          toggleFilters={() => { }}
           filtersUntoggled={false}
           tagsOnLeft={true}
         />

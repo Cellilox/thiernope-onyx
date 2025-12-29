@@ -12,6 +12,8 @@ import { Persona } from "./interfaces";
 import { ThreeDotsLoader } from "@/components/Loading";
 import { ErrorCallout } from "@/components/ErrorCallout";
 import SvgOnyxOctagon from "@/icons/onyx-octagon";
+import { useUser } from "@/components/user/UserProvider";
+
 
 function MainContent({
   personas,
@@ -20,6 +22,10 @@ function MainContent({
   personas: Persona[];
   refreshPersonas: () => void;
 }) {
+  const { user } = useUser();
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = user?.email === superAdminEmail;
+
   // Filter out default/unified assistants
   const customPersonas = personas.filter((persona) => !persona.builtin_persona);
 
@@ -40,14 +46,14 @@ function MainContent({
       </div>
 
       <div>
-        <Separator />
+        {/* <Separator /> */}
 
         <Title>Create an Assistant</Title>
         <CreateButton href="/assistants/new?admin=true">
           New Assistant
         </CreateButton>
 
-        <Separator />
+        {/* <Separator /> */}
 
         <Title>Existing Assistants</Title>
         {customPersonas.length > 0 ? (
@@ -82,18 +88,20 @@ function MainContent({
             <CreateButton href="/assistants/new?admin=true">
               Create Your First Assistant
             </CreateButton>
-            <div className="mt-6 pt-6 border-t border-border">
-              <Text className="text-subtle text-sm">
-                OR go{" "}
-                <a
-                  href="/admin/configuration/default-assistant"
-                  className="text-link underline"
-                >
-                  here
-                </a>{" "}
-                to adjust the Default Assistant
-              </Text>
-            </div>
+            {isSuperAdmin && (
+              <div className="mt-6 pt-6 border-t border-border">
+                <Text className="text-subtle text-sm">
+                  OR go{" "}
+                  <a
+                    href="/admin/configuration/default-assistant"
+                    className="text-link underline"
+                  >
+                    here
+                  </a>{" "}
+                  to adjust the Default Assistant
+                </Text>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -106,7 +114,9 @@ export default function Page() {
 
   return (
     <div className="mx-auto container">
-      <AdminPageTitle icon={SvgOnyxOctagon} title="Assistants" />
+      <AdminPageTitle
+        // icon={SvgOnyxOctagon} 
+        title="Assistants" />
 
       {isLoading && <ThreeDotsLoader />}
 

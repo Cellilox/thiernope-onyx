@@ -63,7 +63,9 @@ const Main = () => {
 const Page = () => {
   return (
     <div className="container mx-auto">
-      <AdminPageTitle icon={SvgThumbsUp} title="Document Feedback" />
+      <AdminPageTitle
+        // icon={SvgThumbsUp} 
+        title="Document Feedback" />
 
       <Main />
     </div>

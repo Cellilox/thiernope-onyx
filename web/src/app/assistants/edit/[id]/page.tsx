@@ -3,6 +3,7 @@ import CardSection from "@/components/admin/CardSection";
 import AssistantEditor from "@/app/admin/assistants/AssistantEditor";
 import { fetchAssistantEditorInfoSS } from "@/lib/assistants/fetchPersonaEditorInfoSS";
 import { ProjectsProvider } from "@/app/chat/projects/ProjectsContext";
+import PageLayout from "@/refresh-components/layouts/PageLayout";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -10,22 +11,20 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   if (!values) {
     return (
-      <div className="px-32">
+      <div className="px-4 md:px-32 py-8">
         <ErrorCallout errorTitle="Something went wrong :(" errorMsg={error} />
       </div>
     );
   } else {
     return (
       <ProjectsProvider>
-        <div className="w-full py-8">
-          <div className="px-32">
-            <div className="mx-auto container">
-              <CardSection className="!border-none !bg-transparent !ring-none">
-                <AssistantEditor {...values} defaultPublic={false} />
-              </CardSection>
-            </div>
+        <PageLayout className="w-full max-w-[80rem] px-4 md:px-32">
+          <div className="w-full py-8">
+            <CardSection className="!border-none !bg-transparent !ring-none">
+              <AssistantEditor {...values} defaultPublic={false} />
+            </CardSection>
           </div>
-        </div>
+        </PageLayout>
       </ProjectsProvider>
     );
   }

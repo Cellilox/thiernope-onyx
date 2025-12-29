@@ -7,7 +7,10 @@ import SvgCpu from "@/icons/cpu";
 export default function Page() {
   return (
     <div className="mx-auto container">
-      <AdminPageTitle title="LLM Setup" icon={SvgCpu} />
+      <AdminPageTitle
+        title="LLM Setup"
+      // icon={SvgCpu} 
+      />
 
       <LLMConfiguration />
     </div>

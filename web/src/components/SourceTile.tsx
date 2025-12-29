@@ -26,16 +26,15 @@ export default function SourceTile({
               justify-center
               p-4
               rounded-lg
-              w-40
+              w-[90%] sm:w-40
               cursor-pointer
               shadow-md
               hover:bg-background-tint-02
               relative
-              ${
-                preSelect
-                  ? "bg-background-tint-01 subtle-pulse"
-                  : "bg-background-tint-00"
-              }
+              ${preSelect
+          ? "bg-background-tint-01 subtle-pulse"
+          : "bg-background-tint-00"
+        }
             `}
       href={navigationUrl}
     >

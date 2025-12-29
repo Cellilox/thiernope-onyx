@@ -10,6 +10,7 @@ import SidebarWrapper from "@/sections/sidebar/SidebarWrapper";
 import { useIsKGExposed } from "@/app/admin/kg/utils";
 import { useCustomAnalyticsEnabled } from "@/lib/hooks/useCustomAnalyticsEnabled";
 import { useUser } from "@/components/user/UserProvider";
+import { useState, memo } from "react";
 import { UserRole } from "@/lib/types";
 import { MdOutlineCreditCard } from "react-icons/md";
 import {
@@ -41,6 +42,9 @@ import SvgActions from "@/icons/actions";
 import SvgUser from "@/icons/user";
 import SvgFileText from "@/icons/file-text";
 import SvgServer from "@/icons/server";
+import useScreenSize from "@/hooks/useScreenSize";
+import { cn } from "@/lib/utils";
+import { useAdminSidebarContext } from "@/sections/sidebar/AdminSidebarContext";
 
 const connectors_items = () => [
   {
@@ -296,22 +300,19 @@ const collections = (
   ];
 };
 
-interface AdminSidebarProps {
-  // These props are passed down from a server component (Layout.tsx) that
-  // determines feature availability server-side. We don't calculate these
-  // directly in this client component to avoid:
-  // 1. Unnecessary API calls on the client-side
-  // 2. Security concerns - preventing end-users from tampering with
-  //    feature flags by making direct API calls
-  // 3. Performance - avoiding refetches when the data is already available
+interface AdminSidebarInnerProps {
+  folded: boolean;
+  onFoldClick: () => void;
   enableCloudSS: boolean;
   enableEnterpriseSS: boolean;
 }
 
-export default function AdminSidebar({
+function AdminSidebarInner({
+  folded,
+  onFoldClick,
   enableCloudSS,
   enableEnterpriseSS,
-}: AdminSidebarProps) {
+}: AdminSidebarInnerProps) {
   const { kgExposed } = useIsKGExposed();
   const pathname = usePathname();
   const { customAnalyticsEnabled } = useCustomAnalyticsEnabled();
@@ -332,7 +333,7 @@ export default function AdminSidebar({
   );
 
   return (
-    <SidebarWrapper>
+    <SidebarWrapper folded={folded} onFoldClick={onFoldClick}>
       <SidebarBody
         actionButton={
           <SidebarTab
@@ -340,23 +341,24 @@ export default function AdminSidebar({
               <CgArrowsExpandUpLeft className={className} size={16} />
             )}
             href="/chat"
+            folded={folded}
           >
             Exit Admin
           </SidebarTab>
         }
         footer={
           <div className="flex flex-col gap-2">
-            {settings.webVersion && (
+            {!folded && settings.webVersion && (
               <Text text02 secondaryBody className="px-2">
                 {`Cellilox version: ${settings.webVersion}`}
               </Text>
             )}
-            <Settings />
+            <Settings folded={folded} />
           </div>
         }
       >
         {items.map((collection, index) => (
-          <SidebarSection key={index} title={collection.name}>
+          <SidebarSection key={index} title={collection.name} folded={folded}>
             <div className="flex flex-col w-full">
               {collection.items.map(({ link, icon: Icon, name }, index) => (
                 <SidebarTab
@@ -366,6 +368,7 @@ export default function AdminSidebar({
                   leftIcon={({ className }) => (
                     <Icon className={className} size={16} />
                   )}
+                  folded={folded}
                 >
                   {name}
                 </SidebarTab>
@@ -375,5 +378,60 @@ export default function AdminSidebar({
         ))}
       </SidebarBody>
     </SidebarWrapper>
+  );
+}
+
+const MemoizedAdminSidebarInner = memo(AdminSidebarInner);
+MemoizedAdminSidebarInner.displayName = "AdminSidebar";
+
+interface AdminSidebarProps {
+  enableCloudSS: boolean;
+  enableEnterpriseSS: boolean;
+}
+
+export default function AdminSidebar({
+  enableCloudSS,
+  enableEnterpriseSS,
+}: AdminSidebarProps) {
+  const { folded, setFolded } = useAdminSidebarContext();
+  const { isMobile } = useScreenSize();
+
+  if (!isMobile)
+    return (
+      <MemoizedAdminSidebarInner
+        folded={folded}
+        onFoldClick={() => setFolded((prev) => !prev)}
+        enableCloudSS={enableCloudSS}
+        enableEnterpriseSS={enableEnterpriseSS}
+      />
+    );
+
+  return (
+    <>
+      <div
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 transition-transform duration-200",
+          folded ? "-translate-x-full" : "translate-x-0"
+        )}
+      >
+        <MemoizedAdminSidebarInner
+          folded={false}
+          onFoldClick={() => setFolded(true)}
+          enableCloudSS={enableCloudSS}
+          enableEnterpriseSS={enableEnterpriseSS}
+        />
+      </div>
+
+      {/* Hitbox to close the sidebar if anything outside of it is touched */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-mask-03 backdrop-blur-03 transition-opacity duration-200",
+          folded
+            ? "opacity-0 pointer-events-none"
+            : "opacity-100 pointer-events-auto"
+        )}
+        onClick={() => setFolded(true)}
+      />
+    </>
   );
 }

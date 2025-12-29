@@ -57,7 +57,7 @@ export function SearchAndFilterControls({
         type="text"
         value={localSearchValue}
         onChange={(event) => setLocalSearchValue(event.target.value)}
-        className="w-96"
+        className="w-full md:w-96"
       />
 
       <Button onClick={hasExpandedSources ? onCollapseAll : onExpandAll}>

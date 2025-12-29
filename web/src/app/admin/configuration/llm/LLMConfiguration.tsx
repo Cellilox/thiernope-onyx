@@ -82,7 +82,8 @@ function DefaultLLMProviderDisplay({
   return (
     <div>
       {popup}
-      <div className="border p-3 bg-background-neutral-01 rounded-16 w-96 flex shadow-md">
+      <div className="border p-3 bg-background-neutral-01 rounded-16 w-full md:w-96 flex shadow-md">
+
         <div className="my-auto">
           <Text headingH3>{providerName}</Text>
         </div>

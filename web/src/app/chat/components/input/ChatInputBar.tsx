@@ -405,7 +405,7 @@ function ChatInputBarInner({
               className={cn(
                 "px-3 flex gap-x-1 py-2 w-full rounded-lg items-center cursor-pointer",
                 tabbingIconIndex == filteredPrompts.length &&
-                  "bg-background-neutral-02",
+                "bg-background-neutral-02",
                 "hover:bg-background-neutral-02"
               )}
               href="/chat/input-prompts"
@@ -480,51 +480,51 @@ function ChatInputBarInner({
         {(selectedDocuments.length > 0 ||
           filterManager.timeRange ||
           filterManager.selectedDocumentSets.length > 0) && (
-          <div className="flex gap-x-.5 px-2">
-            <div className="flex gap-x-1 px-2 overflow-visible overflow-x-scroll items-end miniscroll">
-              {filterManager.timeRange && (
-                <SourceChip
-                  truncateTitle={false}
-                  key="time-range"
-                  icon={<CalendarIcon size={12} />}
-                  title={`${getFormattedDateRangeString(
-                    filterManager.timeRange.from,
-                    filterManager.timeRange.to
-                  )}`}
-                  onRemove={() => {
-                    filterManager.setTimeRange(null);
-                  }}
-                />
-              )}
-              {filterManager.selectedDocumentSets.length > 0 &&
-                filterManager.selectedDocumentSets.map((docSet, index) => (
+            <div className="flex gap-x-.5 px-2">
+              <div className="flex gap-x-1 px-2 overflow-visible overflow-x-scroll items-end miniscroll">
+                {filterManager.timeRange && (
                   <SourceChip
-                    key={`doc-set-${index}`}
-                    icon={<DocumentIcon2 size={16} />}
-                    title={docSet}
+                    truncateTitle={false}
+                    key="time-range"
+                    icon={<CalendarIcon size={12} />}
+                    title={`${getFormattedDateRangeString(
+                      filterManager.timeRange.from,
+                      filterManager.timeRange.to
+                    )}`}
                     onRemove={() => {
-                      filterManager.setSelectedDocumentSets(
-                        filterManager.selectedDocumentSets.filter(
-                          (ds) => ds !== docSet
-                        )
-                      );
+                      filterManager.setTimeRange(null);
                     }}
                   />
-                ))}
-              {selectedDocuments.length > 0 && (
-                <SourceChip
-                  key="selected-documents"
-                  onClick={() => {
-                    toggleDocumentSidebar();
-                  }}
-                  icon={<FileIcon size={16} />}
-                  title={`${selectedDocuments.length} selected`}
-                  onRemove={removeDocs}
-                />
-              )}
+                )}
+                {filterManager.selectedDocumentSets.length > 0 &&
+                  filterManager.selectedDocumentSets.map((docSet, index) => (
+                    <SourceChip
+                      key={`doc-set-${index}`}
+                      icon={<DocumentIcon2 size={16} />}
+                      title={docSet}
+                      onRemove={() => {
+                        filterManager.setSelectedDocumentSets(
+                          filterManager.selectedDocumentSets.filter(
+                            (ds) => ds !== docSet
+                          )
+                        );
+                      }}
+                    />
+                  ))}
+                {selectedDocuments.length > 0 && (
+                  <SourceChip
+                    key="selected-documents"
+                    onClick={() => {
+                      toggleDocumentSidebar();
+                    }}
+                    icon={<FileIcon size={16} />}
+                    title={`${selectedDocuments.length} selected`}
+                    onRemove={removeDocs}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className="flex justify-between items-center w-full p-1 min-h-[40px]">
           <div className="flex flex-row items-center">
@@ -573,7 +573,6 @@ function ChatInputBarInner({
                   selectedAssistant={selectedAssistant}
                   filterManager={filterManager}
                   availableSources={memoizedAvailableSources}
-                  disabled={disabled}
                 />
               )}
               {/* Temporarily disabled - to re-enable, change false to showDeepResearch */}
