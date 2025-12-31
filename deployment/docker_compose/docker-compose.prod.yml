@@ -280,7 +280,7 @@ services:
     # in order to make this work on both Unix-like systems and windows
     command: >
       /bin/sh -c "dos2unix /etc/nginx/conf.d/run-nginx.sh
-      && /etc/nginx/conf.d/run-nginx.sh app.conf.template.prod"
+      && /etc/nginx/conf.d/run-nginx.sh app.conf.template.monolith"
     env_file:
       - .env.nginx
     environment:
@@ -288,6 +288,9 @@ services:
       - NGINX_PROXY_CONNECT_TIMEOUT=${NGINX_PROXY_CONNECT_TIMEOUT:-300}
       - NGINX_PROXY_SEND_TIMEOUT=${NGINX_PROXY_SEND_TIMEOUT:-300}
       - NGINX_PROXY_READ_TIMEOUT=${NGINX_PROXY_READ_TIMEOUT:-300}
+      - FRONTEND_DOMAIN=${FRONTEND_DOMAIN:-cellilox.com}
+      - API_DOMAIN=${API_DOMAIN:-api.cellilox.com}
+      - ONYX_DOMAIN=${ONYX_DOMAIN:-agents.cellilox.com}
 
   # follows https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
   certbot:

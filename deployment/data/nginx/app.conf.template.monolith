@@ -1,0 +1,51 @@
+# Multi-Domain Monolith Configuration for Cellilox
+
+# Onyx Agents (agents.cellilox.com)
+server {
+    listen 80;
+    server_name ${ONYX_DOMAIN};
+
+    location ~ ^/(api|openapi.json)(/.*)?$ {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://${ONYX_BACKEND_API_HOST}:8080;
+    }
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://${ONYX_WEB_SERVER_HOST}:3000;
+    }
+}
+
+# Daxno Frontend (cellilox.com)
+server {
+    listen 80;
+    server_name ${FRONTEND_DOMAIN};
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://daxno-frontend:3000;
+    }
+}
+
+# Daxno Backend (api.cellilox.com)
+server {
+    listen 80;
+    server_name ${API_DOMAIN};
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://daxno-backend:8000;
+    }
+}
