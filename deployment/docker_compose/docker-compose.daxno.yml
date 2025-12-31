@@ -1,0 +1,70 @@
+# Modular Docker Compose for Daxno Services
+# This file is meant to be used alongside the Onyx docker-compose files.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.daxno.yml up -d
+
+services:
+  daxno-backend:
+    build:
+      context: ../../../daxno-backend
+      dockerfile: Dockerfile
+    image: daxno-backend:latest
+    container_name: daxno-backend
+    env_file:
+      - path: .env
+        required: false
+      - path: ../../../daxno-backend/.env
+        required: true
+    environment:
+      # These MUST be in environment (not command) so 'docker exec' can see them
+      - POSTGRES_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@relational_db:5432/${POSTGRES_DB:-postgres}
+      - ONYX_INTERNAL_URL=http://api_server:8080
+      - ONYX_API_URL=http://api_server:8080
+      - ONYX_PUBLIC_URL=http://localhost:3000/api
+      - ONYX_DB_URL=postgresql+asyncpg://onyx:onyx_postgres_password_change_me@relational_db:5432/onyx
+      - REDIS_URL=redis://cache:6379/0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../../daxno-backend:/app
+      # We ignore node_modules and other generated folders
+      - /app/.venv
+      - /app/__pycache__
+    depends_on:
+      - relational_db
+      - cache
+    networks:
+      - default
+
+  daxno-frontend:
+    build:
+      context: ../../../daxno-frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+        - NEXT_PUBLIC_ONYX_URL=${NEXT_PUBLIC_ONYX_URL:-http://localhost:3000}
+        - NEXT_PUBLIC_CLIENT_ID=${NEXT_PUBLIC_CLIENT_ID}
+        - NEXT_PUBLIC_CLERK_SIGN_IN_URL=${NEXT_PUBLIC_CLERK_SIGN_IN_URL}
+        - NEXT_PUBLIC_CLERK_SIGN_UP_URL=${NEXT_PUBLIC_CLERK_SIGN_UP_URL}
+        - NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=${NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL}
+        - NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=${NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}
+    image: daxno-frontend:latest
+    container_name: daxno-frontend
+    env_file:
+      - path: ../../../daxno-frontend/.env.local
+        required: true
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_ONYX_URL=http://localhost:3000
+      - INTERNAL_API_URL=http://daxno-backend:8000
+    depends_on:
+      - daxno-backend
+    networks:
+      - default
+    ports:
+      - "3001:3000"
+
+networks:
+  default:
+    name: onyx_default
+    external: true
