@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: daxno-backend
     restart: unless-stopped
+    env_file:
+      - path: ../../../daxno-backend/.env.prod
+        required: true
     environment:
       - POSTGRES_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@relational_db:5432/${POSTGRES_DB}
       - ONYX_INTERNAL_URL=http://api_server:8080
