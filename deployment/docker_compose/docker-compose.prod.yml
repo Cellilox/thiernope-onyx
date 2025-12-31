@@ -3,9 +3,6 @@ name: onyx
 services:
   api_server:
     image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
     command: >
       /bin/sh -c "
       alembic upgrade head &&
@@ -50,9 +47,6 @@ services:
 
   background:
     image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
     command: >
       /bin/sh -c "
       if [ -f /etc/ssl/certs/custom-ca.crt ]; then
@@ -136,9 +130,6 @@ services:
 
   mcp_server:
     image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
     command: >
       /bin/sh -c "if [ \"${MCP_SERVER_ENABLED:-}\" != \"True\" ] && [ \"${MCP_SERVER_ENABLED:-}\" != \"true\" ]; then
         echo 'MCP server is disabled (MCP_SERVER_ENABLED=false), skipping...';
