@@ -2,6 +2,9 @@ name: onyx
 
 services:
   api_server:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
     image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
     command: >
       /bin/sh -c "
@@ -46,6 +49,9 @@ services:
       - api_server_logs:/var/log/onyx
 
   background:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
     image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
     command: >
       /bin/sh -c "
