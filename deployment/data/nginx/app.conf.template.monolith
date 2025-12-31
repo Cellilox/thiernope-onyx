@@ -5,6 +5,10 @@ server {
     listen 80;
     server_name ${ONYX_DOMAIN} 138.197.206.175;
 
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
     # Strips /api prefix for Onyx backend
     location ~ ^/(api|openapi.json)(/.*)?$ {
         rewrite ^/api(/.*)$ $1 break;
@@ -31,6 +35,10 @@ server {
     listen 80;
     server_name ${FRONTEND_DOMAIN};
 
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
     location / {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -45,6 +53,10 @@ server {
 server {
     listen 80;
     server_name ${API_DOMAIN};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
 
     location / {
         proxy_set_header Host $host;
