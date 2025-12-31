@@ -1,5 +1,11 @@
 # Multi-Domain Monolith HTTPS Configuration for Cellilox
 
+# Map for WebSocket support
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
 # Global Redirect: HTTP -> HTTPS
 server {
     listen 80;
@@ -39,7 +45,7 @@ server {
         # WebSocket support
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
         
         proxy_pass http://${ONYX_BACKEND_API_HOST}:8080;
     }
@@ -53,7 +59,7 @@ server {
         # WebSocket support
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
         
         proxy_pass http://${ONYX_WEB_SERVER_HOST}:3000;
     }
@@ -78,7 +84,7 @@ server {
         # WebSocket support
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
         
         proxy_pass http://daxno-frontend:3000;
     }
@@ -103,7 +109,7 @@ server {
         # WebSocket support
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
+        proxy_set_header Connection $connection_upgrade;
         
         proxy_pass http://daxno-backend:8000;
     }
