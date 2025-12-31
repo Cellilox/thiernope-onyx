@@ -239,6 +239,7 @@ services:
     restart: unless-stopped
     environment:
       - VESPA_SKIP_UPGRADE_CHECK=true
+      - VESPA_IGNORE_NOT_ENOUGH_MEMORY=true
     ports:
       - "19071:19071"
       - "8081:8081"
