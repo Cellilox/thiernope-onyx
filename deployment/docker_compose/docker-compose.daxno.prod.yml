@@ -34,6 +34,9 @@ services:
     image: daxno-frontend:prod
     container_name: daxno-frontend
     restart: unless-stopped
+    env_file:
+      - path: ../../../daxno-frontend/.env.prod
+        required: true
     environment:
       - NEXT_PUBLIC_API_URL=https://${API_DOMAIN:-api.cellilox.com}
       - NEXT_PUBLIC_ONYX_URL=https://${ONYX_DOMAIN:-agents.cellilox.com}
