@@ -2,9 +2,7 @@ version: '3'
 
 services:
   daxno-backend:
-    build:
-      context: ../../../daxno-backend
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME}/daxno-backend:latest
     container_name: daxno-backend
     restart: unless-stopped
     env_file:
@@ -26,15 +24,7 @@ services:
       - default
 
   daxno-frontend:
-    build:
-      context: ../../../daxno-frontend
-      dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_API_URL=https://${API_DOMAIN:-api.cellilox.com}
-        - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-        - NEXT_PUBLIC_ONYX_URL=https://${ONYX_DOMAIN:-agents.cellilox.com}
-        - NEXT_PUBLIC_CLIENT_ID=${NEXT_PUBLIC_CLIENT_ID}
-    image: daxno-frontend:prod
+    image: ${DOCKERHUB_USERNAME}/daxno-frontend:prod
     container_name: daxno-frontend
     restart: unless-stopped
     env_file:
