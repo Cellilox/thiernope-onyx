@@ -2,10 +2,7 @@ name: onyx
 
 services:
   api_server:
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
-    image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
+    image: ${DOCKERHUB_USERNAME}/onyx-backend:latest
     command: >
       /bin/sh -c "
       alembic upgrade head &&
@@ -49,10 +46,7 @@ services:
       - api_server_logs:/var/log/onyx
 
   background:
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
-    image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
+    image: ${DOCKERHUB_USERNAME}/onyx-backend:latest
     command: >
       /bin/sh -c "
       if [ -f /etc/ssl/certs/custom-ca.crt ]; then
@@ -107,19 +101,7 @@ services:
     #   - ${CA_CERT_PATH:-./custom-ca.crt}:/etc/ssl/certs/custom-ca.crt:ro
 
   web_server:
-    image: onyxdotapp/onyx-web-server:${IMAGE_TAG:-latest}
-    build:
-      context: ../../web
-      dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_POSITIVE_PREDEFINED_FEEDBACK_OPTIONS=${NEXT_PUBLIC_POSITIVE_PREDEFINED_FEEDBACK_OPTIONS:-}
-        - NEXT_PUBLIC_NEGATIVE_PREDEFINED_FEEDBACK_OPTIONS=${NEXT_PUBLIC_NEGATIVE_PREDEFINED_FEEDBACK_OPTIONS:-}
-        - NEXT_PUBLIC_DISABLE_LOGOUT=${NEXT_PUBLIC_DISABLE_LOGOUT:-}
-        - NEXT_PUBLIC_THEME=${NEXT_PUBLIC_THEME:-}
-        - NEXT_PUBLIC_FORGOT_PASSWORD_ENABLED=${NEXT_PUBLIC_FORGOT_PASSWORD_ENABLED:-}
-        - NEXT_PUBLIC_DAXNO_URL=${NEXT_PUBLIC_DAXNO_URL:-}
-        - NEXT_PUBLIC_SUPER_ADMIN_EMAIL=${NEXT_PUBLIC_SUPER_ADMIN_EMAIL:-}
-        - NEXT_PUBLIC_ADMIN_ACCESS_KEY=${NEXT_PUBLIC_ADMIN_ACCESS_KEY:-}
+    image: ${DOCKERHUB_USERNAME}/onyx-web-server:latest
     depends_on:
       - api_server
     restart: unless-stopped
@@ -135,10 +117,7 @@ services:
         max-file: "6"
 
   mcp_server:
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
-    image: onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}
+    image: ${DOCKERHUB_USERNAME}/onyx-backend:latest
     command: >
       /bin/sh -c "if [ \"${MCP_SERVER_ENABLED:-}\" != \"True\" ] && [ \"${MCP_SERVER_ENABLED:-}\" != \"true\" ]; then
         echo 'MCP server is disabled (MCP_SERVER_ENABLED=false), skipping...';
