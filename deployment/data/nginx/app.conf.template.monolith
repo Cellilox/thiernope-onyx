@@ -23,6 +23,9 @@ server {
     }
 }
 
+# Use Docker's internal DNS resolver to handle container IP changes dynamically
+resolver 127.0.0.11 valid=30s;
+
 # --- SECURE SERVERS (HTTPS) ---
 
 # Onyx Agents (agents.cellilox.com)
