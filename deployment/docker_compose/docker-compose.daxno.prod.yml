@@ -33,6 +33,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=https://${API_DOMAIN:-api.cellilox.com}
       - NEXT_PUBLIC_ONYX_URL=https://${ONYX_DOMAIN:-agents.cellilox.com}
+      - NEXT_PUBLIC_CLIENT_URL=https://${FRONTEND_DOMAIN:-cellilox.com}
       - INTERNAL_API_URL=http://daxno-backend:8000
     depends_on:
       - daxno-backend
