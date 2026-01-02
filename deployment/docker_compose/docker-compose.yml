@@ -167,6 +167,7 @@ services:
     restart: unless-stopped
     environment:
       - INTERNAL_URL=${INTERNAL_URL:-http://api_server:8080}
+      - HOSTNAME=0.0.0.0
 
   mcp_server:
     image: ${ONYX_BACKEND_IMAGE:-onyxdotapp/onyx-backend:${IMAGE_TAG:-latest}}

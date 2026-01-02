@@ -4,15 +4,14 @@ log_format custom_main '$remote_addr - $remote_user [$time_local] "$request" '
                 '"$http_user_agent" "$http_x_forwarded_for" '
                 'rt=$request_time';
 
+# Increase buffer size for large headers (Clerk Cookies + OAuth Tokens)
+client_header_buffer_size 8k;
+large_client_header_buffers 4 32k;
+
+# Use Docker's internal DNS resolver to handle container IP changes dynamically
+resolver 127.0.0.11 valid=30s;
+
 upstream api_server {
-    # fail_timeout=0 means we always retry an upstream even if it failed
-    # to return a good HTTP response
-
-    # for UNIX domain socket setups
-    #server unix:/tmp/gunicorn.sock fail_timeout=0;
-
-    # for a TCP configuration
-    # TODO: use gunicorn to manage multiple processes
     server ${ONYX_BACKEND_API_HOST}:8080 fail_timeout=0;
 }
 
