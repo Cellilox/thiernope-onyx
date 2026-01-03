@@ -19,7 +19,7 @@ services:
       - POSTGRES_URL=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@relational_db:5432/${POSTGRES_DB:-postgres}
       - ONYX_INTERNAL_URL=http://api_server:8080
       - ONYX_API_URL=http://api_server:8080
-      - ONYX_PUBLIC_URL=http://localhost:3000/api
+      - ONYX_PUBLIC_URL=http://localhost:3000
       - ONYX_DB_URL=postgresql+asyncpg://onyx:onyx_postgres_password_change_me@relational_db:5432/onyx
       - REDIS_URL=redis://cache:6379/0
     ports:
@@ -32,6 +32,12 @@ services:
     depends_on:
       - relational_db
       - cache
+    networks:
+      - default
+
+  api_server:
+    environment:
+      - WEB_DOMAIN=http://localhost:3000
     networks:
       - default
 
