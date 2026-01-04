@@ -85,7 +85,7 @@ server {
         # redirects, we set the Host: header above already.
         proxy_redirect off;
         
-        proxy_pass $api_upstream;
+        proxy_pass $api_upstream$uri$is_args$args;
     }
 
     location / {
